@@ -1,2 +1,18 @@
 class Person
+	types
+		public String = seq of char;
+		public Date :: year : nat
+									month: nat
+									day : nat;
+		public Gender = <Masculine> | <Feminin>;
+		
+	instance variables
+		private name : String := "Teste";
+		private birthDate : Date;
+		private gender : Gender;
+		private num : nat;
+	
+	operations
+		public Person: String ==> Person
+						      Person(x) == (name := x; return self);
 end Person
