@@ -1,3 +1,39 @@
 class Company
---asdasd
+	types
+		public String = seq of char;
+		public Type = <School> | <Private> | <Public>;
+	
+	instance variables
+		private name : String;
+		private description : String;
+		private address : String;
+		private type : Type;
+	
+	operations
+		public Company: String * String * String * Type ==> Company
+						      Company(n, d, a, t) == (name := n; description := d; address := a; type := t; return self)
+						      pre n <> [];
+						
+		public Company : String ==> Company
+									Company(n) == (name := n; return self)
+									pre n <> [];
+		--START GETS--
+		public getName : () ==> String
+										getName() == (return name);
+		public getDescription : () ==> String
+										getDescription() == (return description);
+		public getAddress : () ==> String
+										getAddress() == (return address);
+		public getType : () ==> Type
+										getType() == (return type);
+		--END GETS--
+		
+		--START SETS--
+		public setDescription : String ==> ()
+												setDescription(d) == (description := d; return);
+		public setAddress : String ==> ()
+												setAddress(a) == (address := a; return);
+		public setType : Type ==> ()
+												setType(t) == (type := t; return);
+		--END SETS--
 end Company

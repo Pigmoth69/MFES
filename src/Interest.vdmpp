@@ -1,2 +1,17 @@
 class Interest
+	types
+		public String = seq of char;
+	
+	instance variables
+		private name : String;
+		-- for future implementations --
+	
+	operations
+		public Interest: String ==> Interest
+						      Interest(n) == (name := n; return self)
+						      pre n <> [];
+		--START GETS--
+		public getName : () ==> String
+										getName() == (return name);
+		--END GETS--
 end Interest

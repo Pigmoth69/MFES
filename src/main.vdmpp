@@ -1,0 +1,11 @@
+class Main
+  instance variables
+  	linkedIn : LinkedIn := new LinkedIn();
+	  public d : Date := new Date(10, 10, 10);
+	  public c : Company := new Company("WOW", "descricao", "endereco", <Private>);
+	  public w : Work := new Work("CEO", d, c);
+  	
+  operations                
+	  public Main: () ==> Main
+						      Main() == (return self);
+end Main

@@ -1,2 +1,38 @@
 class Education
+	types
+		public String = seq of char;
+		public Title = <Graduate> | <Master> | <Doctor> | <UnderGrad> | <Student>
+	
+	instance variables
+		private company : [Company];
+		private title : Title;
+		private startDate : [Date];
+		private endDate : Date;
+		private course : String;
+		
+		inv startDate <> nil;
+		inv company <> nil;
+	
+	operations
+		public Education: Title * Company * Date * String ==> Education
+						      Education(t, c, d, co) == (title := t; startDate := d; company := c; course := co; return self)
+						      pre co <> [];
+		--START GETS--
+		public getTitle : () ==> Title
+										getTitle() == (return title);	
+		public getStartDate : () ==> Date
+										getStartDate() == (return startDate);	
+		public getEndDate : () ==> Date
+										getEndDate() == (return endDate);	
+		public getCompany : () ==> Company
+										getCompany() == (return company);
+		public getCourse : () ==> String
+										getCourse() == (return course);
+		--END GETS--
+		
+		--START SETS--
+		public setEndDate : Date ==> ()
+												setEndDate(d) == (endDate := d; return)
+		--END SETS--
+		
 end Education

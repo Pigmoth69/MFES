@@ -1,2 +1,33 @@
 class Work
+	types
+		public String = seq of char;
+	
+	instance variables
+		private title : String;
+		private startDate : [Date];
+		private endDate : Date;
+		private company : [Company];
+		
+		inv startDate <> nil;
+		inv company <> nil;
+	
+	operations
+		public Work: String * Date * Company ==> Work
+						      Work(t, d, c) == (title := t; startDate := d; company := c; return self)
+						      pre t <> [];
+		--START GETS--
+		public getTitle : () ==> String
+										getTitle() == (return title);	
+		public getStartDate : () ==> Date
+										getStartDate() == (return startDate);	
+		public getEndDate : () ==> Date
+										getEndDate() == (return endDate);	
+		public getCompany : () ==> Company
+										getCompany() == (return company);
+		--END GETS--
+		
+		--START SETS--
+		public setEndDate : Date ==> ()
+												setEndDate(d) == (endDate := d; return)
+		--END SETS--
 end Work

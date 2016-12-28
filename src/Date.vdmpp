@@ -1,0 +1,25 @@
+class Date
+	
+	types
+	
+	instance variables
+		private year : nat;
+		private month : nat;
+		private day : nat;
+	operations
+		public Date: nat * nat * nat ==> Date
+						      Date(y, m, d) == (year := y; month := m; day := d; return self)
+						      pre y > 0 and m > 0 and m <= 12 and d > 0 and d <= 31;
+		--START GETS--
+		public getYear : () ==> nat
+										getYear() == (return year);	
+		public getMonth : () ==> nat
+										getMonth() == (return month);	
+		public getDay : () ==> nat
+										getDay() == (return day);
+		--END GETS--
+		public compareDate : Date ==> bool
+										compareDate(d) == (
+											return ( (d.getYear() * d.getMonth() * d.getDay()) < (year * month * day) )
+										);
+end Date

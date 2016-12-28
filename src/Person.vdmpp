@@ -1,18 +1,75 @@
 class Person
 	types
 		public String = seq of char;
-		public Date :: year : nat
-									month: nat
-									day : nat;
 		public Gender = <Masculine> | <Feminin>;
+		public Status = <Unemployed> | <Student> | <Employed>
 		
 	instance variables
-		private name : String := "Teste";
+		private static id : nat := 0;
+		private name : String;
 		private birthDate : Date;
 		private gender : Gender;
-		private num : nat;
-	
+		private currentWork : Work;
+		private pastWorks : set of Work;
+		private status : Status;
+		private address : String;
+		private skills : set of Skill;
+		private education : set of Education;
+		private description : String;
+		private languages : set of Language;
+		private interests : set of Interest;
+		private cv : String;
+		private connections : set of Person;
+		
 	operations
 		public Person: String ==> Person
-						      Person(x) == (name := x; return self);
+						      Person(x) == (id := id + 1; name := x; return self);
+						      
+		--START GETS--
+		public getName : () ==> String
+										getName() == (return name);	
+		public getBirthDate : () ==> Date
+										getBirthDate() == (return birthDate);	
+		public getID : () ==> nat
+										getID() == (return id);	
+		public getGender : () ==> Gender
+										getGender() == (return gender);
+		public getCurrentWork : () ==> Work
+										getCurrentWork() == (return currentWork);
+		public getPastWorks : () ==> set of Work
+										getPastWorks() == (return pastWorks);
+		public getStatus : () ==> Status
+										getStatus() == (return status);
+		public getAddress : () ==> String
+										getAddress() == (return address);
+		public getSkills : () ==> set of Skill
+										getSkills() == (return skills);
+		public getEducation : () ==> set of Education
+										getEducation() == (return education);
+		public getDescription : () ==> String
+										getDescription() == (return description);
+		public getLanguages : () ==> set of Language
+										getLanguages() == (return languages);
+		public getInterests : () ==> set of Interest
+										getInterests() == (return interests);
+		public getCV : () ==> String
+										getCV() == (return cv);
+		public getConnections : () ==> set of Person
+										getConnections() == (return connections);
+		--END GETS--
+		
+		--START SETS--
+		public setBirthDate : Date ==> ()
+												setBirthDate(d) == (birthDate := d; return);
+		public setGender : Gender ==> ()
+												setGender(g) == (gender := g; return);
+		public setStatus : Status ==> ()
+												setStatus(s) == (status := s; return);
+		public setAddress : String ==> ()
+												setAddress(a) == (address := a; return);
+		public setDescription : String ==> ()
+												setDescription(d) == (description := d; return);
+		public setCV : String ==> ()
+												setCV(c) == (cv := c; return);
+		--END SETS--
 end Person

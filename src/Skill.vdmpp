@@ -1,2 +1,25 @@
 class Skill
+	types
+		public String = seq of char;
+	
+	instance variables
+		private name : String;
+		private hability : nat;
+	
+	operations
+		public Skill: String * nat ==> Skill
+						      Skill(n, h) == (name := n; hability := h; return self)
+						      pre h > 0 and h <= 10 and n <> [];
+		--START GETS--
+		public getName : () ==> String
+										getName() == (return name);	
+		public getHability : () ==> nat
+										getHability() == (return hability);
+		--END GETS--
+		
+		--START SETS--
+		public setHability : nat ==> ()
+												setHability(h) == (hability := h; return)
+												pre h > 0 and h <= 10;
+		--END SETS--
 end Skill
