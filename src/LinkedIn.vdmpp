@@ -51,9 +51,5 @@ class LinkedIn
 			);
 
 end LinkedIn
---public push: int ==> ()
---              push(x) == contents := [x] ^ contents
---              pre len contents < capacity
---              post contents = [x] ^ contents~;
 
 
