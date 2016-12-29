@@ -72,4 +72,21 @@ class Person
 		public setCV : String ==> ()
 												setCV(c) == (cv := c; return);
 		--END SETS--
+		
+		public commonContacts : Person ==> set of Person
+														commonContacts(p) ==
+														(
+															return p.getConnections() inter connections;
+														);
+		public addCV : String ==> ()
+										addCV(c) == (cv := c; return);
+		
+		public distance : Person ==> nat
+											distance(p) == (
+												dcl retorno : set of Person;
+												for all connection in set connections do
+													if (connection not in set retorno)
+													then retorno := retorno union {connection};
+												return 0; -- foi para não dar erro
+											);
 end Person
