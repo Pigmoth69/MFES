@@ -1,4 +1,59 @@
 class LinkedIn
-
+	types
+		public String = seq of char;
+	instance variables
+		private persons: set of Person:= {};
+		private companies: set of Company:= {};
+		
+	operations
+	
+		public addPerson: Person ==> () 
+			addPerson(p) == persons :=  {p} union persons
+			pre p not in set persons
+			post persons =  {p} union persons~;
+			
+		public addCompany: Company ==> () 
+			addCompany(c) == companies :=  {c} union companies
+			pre c not in set companies
+			post companies =  {c} union companies~;
+			
+		public mostConnections: () ==> Person
+			mostConnections() == 
+			(
+			dcl person : Person:= new Person();
+			for all p in set persons do
+			if card {p.getConnections()} > card {person.getConnections()}
+				then person := p;
+			return person;			
+			);
+			
+		public commonConnections: Person * Person ==> set of Person
+			commonConnections(p1,p2) == 
+			(
+			dcl res: set of Person:={};
+			
+			for all p in set p1.getConnections() do
+				if p in set p2.getConnections()
+					then res:= {p} union res;
+			return res;
+			)
+			pre p1 in set persons and p2 in set persons;
+			
+		public searchPerson: String ==> set of Person
+			searchPerson(s)==
+			(
+				dcl res: set of Person:= {};
+					for all p in set persons do
+						if p.getName() = s or p.getAddress() = s or p.getDescription()=s
+							then res:= {p}union persons;
+				return res;			
+					
+			);
 
 end LinkedIn
+--public push: int ==> ()
+--              push(x) == contents := [x] ^ contents
+--              pre len contents < capacity
+--              post contents = [x] ^ contents~;
+
+
