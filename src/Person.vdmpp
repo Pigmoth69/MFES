@@ -257,3 +257,75 @@ class Person
 				return 0 -- foi para não dar erro
 			);
 end Person
+
+class PersonTest is subclass of TestCaseLinkedIn
+	instance variables
+		pI : Person := new Person("Jose Miguel Botelho Mendes");
+		pF : Person := new Person("Daniel da Silva Reis");
+		p1 : Person := new Person("Luis Figueiredo");
+		p2 : Person := new Person("Diogo Moura");
+		p3 : Person := new Person("Antonio Ramadas");
+		p4 : Person := new Person("Pedro Castro");
+		p5 : Person := new Person("Paulino");
+		p6 : Person := new Person("Cigano do Codigo");
+		
+		cF : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
+		cI : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
+		
+		dF : Date := new Date(2016, 10, 30);
+		dI : Date := new Date(2016, 10, 31);
+		
+		wF : Work := new Work("Balconista", dF, cF);
+		wFF : Work := new Work("CEO", dF, cF);
+		
+		wI : Work := new Work("Balconista", dF, cI);
+		wII : Work := new Work("CEO", dF, cI);
+		
+		s1 : Skill := new Skill("JAVA", 10);
+		s2 : Skill := new Skill("Alloy", 2);
+		s3 : Skill := new Skill("C", 5);
+		s4 : Skill := new Skill("OpenGL", 4);
+		
+		c1 : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
+		c2 : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <School>);
+		
+		d1 : Date := new Date(2016, 10, 30);
+		d2 : Date := new Date(2016, 10, 31);
+		
+		eF : Education := new Education(<Graduate>, c1, d2, "Mestrado Integrado Em Engenharia Informatica e Computacao");
+		eI : Education := new Education(<UnderGrad>, c2, d2, "Estagio Final");
+		
+		l1 : Language := new Language("Portuguese", 10);
+		l2 : Language := new Language("English", 8);
+		l3 : Language := new Language("Spanish", 6);
+		l4 : Language := new Language("French", 2);
+		
+		i1 : Interest := new Interest("Requirements Documents");
+		i2 : Interest := new Interest("GTA V");
+		i3 : Interest := new Interest("GTA IV");
+		i4 : Interest := new Interest("GTA III");
+		i5 : Interest := new Interest("GTA II");
+		i6 : Interest := new Interest("GTA I");
+	operations
+		
+		-- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(pI.getName(), "Jose Miguel Botelho Mendes");
+	      assertEqual(pF.getName(), "Daniel da Silva Reis");
+	    );
+	  
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : PersonTest := new PersonTest();
+	      teste.testGetName();
+	    );
+end PersonTest
