@@ -4,23 +4,33 @@ class Language
 	
 	instance variables
 		private name : String;
+		
+		-- The proeficiency in the language. It goes from 1 to 10. --
 		private proeficiency : nat;
 	
 	operations
+	
+		-- Creates a new Language, given its name and the proeficiency of the user in it. --
 		public Language: String * nat ==> Language
-						      Language(n, h) == (name := n; proeficiency := h; return self)
-						      pre h > 0 and h <= 10 and n <> [];
+		  Language(n, h) == (name := n; proeficiency := h; return self)
+		  pre h > 0 and h <= 10 and n <> [];
 		--START GETS--
+		
+		-- Returns the name of the language. --
 		public getName : () ==> String
-										getName() == (return name);	
+			getName() == (return name);
+		
+		-- Returns the user's proeficiency in the language. --	
 		public getProeficiency : () ==> nat
-										getProeficiency() == (return proeficiency);
+			getProeficiency() == (return proeficiency);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Changes the user's proeficiency in the given language. --
 		public setProeficiency : nat ==> ()
-												setProeficiency(h) == (proeficiency := h; return)
-												pre h > 0 and h <= 10;
+			setProeficiency(h) == (proeficiency := h; return)
+			pre h > 0 and h <= 10;
 		--END SETS--
 end Language
 

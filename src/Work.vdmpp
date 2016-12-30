@@ -3,33 +3,52 @@ class Work
 		public String = seq of char;
 	
 	instance variables
+		-- The title of the user in the company, the "job". --
 		private title : String;
+		
+		-- The date in which the user started working in the company. --
 		private startDate : [Date];
+		
+		-- The date in which the user quit working in the company. --
 		private endDate : Date;
+		
+		-- The company in which the user worked. -- 
 		private company : [Company];
 		
 		inv startDate <> nil;
 		inv company <> nil;
 	
 	operations
+		
+		-- Creates a new Work, given its title, the date in which it started and the company. --
 		public Work: String * Date * Company ==> Work
-						      Work(t, d, c) == (title := t; startDate := d; company := c; return self)
-						      pre t <> [];
+      Work(t, d, c) == (title := t; startDate := d; company := c; return self)
+      pre t <> [];
 		--START GETS--
+		
+		-- Returns the title of the Work. --
 		public getTitle : () ==> String
-										getTitle() == (return title);	
+			getTitle() == (return title);	
+			
+		-- Returns the start date of the Work. --
 		public getStartDate : () ==> Date
-										getStartDate() == (return startDate);	
+			getStartDate() == (return startDate);	
+		
+		-- Returns the end date of the Work. --
 		public getEndDate : () ==> Date
-										getEndDate() == (return endDate);	
+			getEndDate() == (return endDate);
+			
+		-- Returns the company of the Work. --
 		public getCompany : () ==> Company
-										getCompany() == (return company);
+			getCompany() == (return company);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Changes the date in which the user ended its Work. --
 		public setEndDate : Date ==> ()
-												setEndDate(d) == (endDate := d; return)
-												pre d.compareDate(startDate);
+			setEndDate(d) == (endDate := d; return)
+			pre d.compareDate(startDate);
 		--END SETS--
 end Work
 

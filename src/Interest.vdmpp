@@ -4,15 +4,18 @@ class Interest
 	
 	instance variables
 		private name : String;
-		-- for future implementations --
-	
+		-- for future implementations, like give it a rating, and all that stuff --
+		
 	operations
+		-- Creates a new Interest given its name. --
 		public Interest: String ==> Interest
-						      Interest(n) == (name := n; return self)
-						      pre n <> [];
+      Interest(n) == (name := n; return self)
+      pre n <> [];
 		--START GETS--
+		
+		-- Returns the name of the Interest. --
 		public getName : () ==> String
-										getName() == (return name);
+			getName() == (return name);
 		--END GETS--
 end Interest
 

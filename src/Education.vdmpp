@@ -1,39 +1,62 @@
 class Education
 	types
 		public String = seq of char;
+		
+		-- This title is the qualification received at the school.
 		public Title = <Graduate> | <Master> | <Doctor> | <UnderGrad> | <Student>
 	
 	instance variables
 		private company : [Company];
 		private title : Title;
+		
+		-- The date in which the education started. --
 		private startDate : [Date];
+		
+		-- The date in which the education ended. --
 		private endDate : Date;
+		
+		-- The course taken at the school. --
 		private course : String;
 		
 		inv startDate <> nil;
 		inv company <> nil;
 	
 	operations
+	
+		-- Creates a new Education, given its title, company, the date in which it started and the course taken. --
 		public Education: Title * Company * Date * String ==> Education
-						      Education(t, c, d, co) == (title := t; startDate := d; company := c; course := co; return self)
-						      pre co <> [];
+      Education(t, c, d, co) == (title := t; startDate := d; company := c; course := co; return self)
+      pre co <> [] and c.getType() = <School>;
 		--START GETS--
+		
+		-- Returns the title of the Education. --
 		public getTitle : () ==> Title
-										getTitle() == (return title);	
+			getTitle() == (return title);
+										
+		-- Returns the date in which the Education started. --					
 		public getStartDate : () ==> Date
-										getStartDate() == (return startDate);	
-		public getEndDate : () ==> Date
-										getEndDate() == (return endDate);	
+			getStartDate() == (return startDate);
+			
+		-- Returns the date in which the Education ended. --
+		public getEndDate : () ==> Date	
+			getEndDate() == (return endDate);
+			
+		-- Returns the company of the Education. --
 		public getCompany : () ==> Company
-										getCompany() == (return company);
+			getCompany() == (return company);
+		
+		-- Returns the course of the Education. --
 		public getCourse : () ==> String
-										getCourse() == (return course);
+			getCourse() == (return course);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Sets the date in which the Education ended. --
+		-- It checks if the end date is "bigger" than the date in which it started. --
 		public setEndDate : Date ==> ()
-												setEndDate(d) == (endDate := d; return)
-												pre d.compareDate(startDate);
+			setEndDate(d) == (endDate := d; return)
+			pre d.compareDate(startDate);
 		--END SETS--
 		
 end Education
@@ -43,7 +66,7 @@ class EducationTest is subclass of TestCaseLinkedIn
 	instance variables
 	
 		cF : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
-		cI : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
+		cI : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <School>);
 		
 		dF : Date := new Date(2016, 10, 30);
 		dI : Date := new Date(2016, 10, 31);

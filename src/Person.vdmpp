@@ -1,92 +1,259 @@
 class Person
 	types
 		public String = seq of char;
+		
+		-- The gender of the person. --
 		public Gender = <Masculine> | <Feminin>;
+		
+		-- The status of the person, based on its work. --
 		public Status = <Unemployed> | <Student> | <Employed>
 		
 	instance variables
+	
+		-- The id of the Person, it is unique. --
 		private static id : nat := 0;
 		private name : String;
 		private birthDate : Date;
 		private gender : Gender;
 		private currentWork : Work;
+		
+		-- A set of all the previous works of the Person. --
 		private pastWorks : set of Work;
 		private status : Status;
 		private address : String;
+		
+		-- A set of the all skills the Person has. --
 		private skills : set of Skill;
+		
+		-- A set of all the previous Schools the Person frequented. --
 		private education : set of Education;
 		private description : String;
+		
+		-- A set of all the languages the Person has added to its LinkedIn Profile. --
 		private languages : set of Language;
 		private interests : set of Interest;
 		private cv : String;
+		
+		-- The connections of a Person, as in, all of the other Persons he "follows". --
 		private connections : set of Person;
 		
 	operations
+	
+		-- Creates a new Person given its name. --
 		public Person: String ==> Person
-						      Person(x) == (id := id + 1; name := x; return self);
+      Person(x) == (id := id + 1; name := x; return self);
 						      
 		--START GETS--
+		
+		-- Returns the name of the Person. --
 		public getName : () ==> String
-										getName() == (return name);	
+			getName() == (return name);	
+			
+		-- Returns the birth date of the Person. --
 		public getBirthDate : () ==> Date
-										getBirthDate() == (return birthDate);	
+			getBirthDate() == (return birthDate);
+		
+		-- Returns the ID of the Person. --
 		public getID : () ==> nat
-										getID() == (return id);	
+			getID() == (return id);	
+			
+		-- Returns the gender of the person. --
 		public getGender : () ==> Gender
-										getGender() == (return gender);
+			getGender() == (return gender);
+			
+		-- Returns the current work of the person. --
 		public getCurrentWork : () ==> Work
-										getCurrentWork() == (return currentWork);
+			getCurrentWork() == (return currentWork);
+			
+		-- Returns all of the Person's previous works. --	
 		public getPastWorks : () ==> set of Work
-										getPastWorks() == (return pastWorks);
+			getPastWorks() == (return pastWorks);
+			
+		-- Returns the status of the Person. --
 		public getStatus : () ==> Status
-										getStatus() == (return status);
+			getStatus() == (return status);
+			
+		-- Returns the address of the Person. --
 		public getAddress : () ==> String
-										getAddress() == (return address);
+			getAddress() == (return address);
+			
+		-- Returns all of the Person's skills. 
 		public getSkills : () ==> set of Skill
-										getSkills() == (return skills);
+			getSkills() == (return skills);
+			
+		-- Returns all of the Person's schools he frequented. --
 		public getEducation : () ==> set of Education
-										getEducation() == (return education);
+			getEducation() == (return education);
+			
+		-- Returns a description of the Person. --
 		public getDescription : () ==> String
-										getDescription() == (return description);
+			getDescription() == (return description);
+			
+		-- Returns all of the Person's languages. --
 		public getLanguages : () ==> set of Language
-										getLanguages() == (return languages);
+			getLanguages() == (return languages);
+			
+		-- Returns all of the Person's interests. --
 		public getInterests : () ==> set of Interest
-										getInterests() == (return interests);
+			getInterests() == (return interests);
+			
+		-- Returns the Person's CV. --
 		public getCV : () ==> String
-										getCV() == (return cv);
+			getCV() == (return cv);
+			
+		-- Returns all of the Person's connections. --
 		public getConnections : () ==> set of Person
-										getConnections() == (return connections);
+			getConnections() == (return connections);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Changes the Person's birth date. --
 		public setBirthDate : Date ==> ()
-												setBirthDate(d) == (birthDate := d; return);
+			setBirthDate(d) == (birthDate := d; return);
+		
+		-- Changes the Person's gender. --
 		public setGender : Gender ==> ()
-												setGender(g) == (gender := g; return);
+			setGender(g) == (gender := g; return);
+		
+		-- Changes the Person's status. --
+		-- If the person goes from being employed, to unemployed, the current work ends and it's added to the past works set. --
 		public setStatus : Status ==> ()
-												setStatus(s) == (status := s; return);
+			setStatus(s) ==
+			(
+				if (status = <Employed> and s = <Unemployed>)
+				then
+				(
+					dcl data : Date := new Date(2016,12,30); -- ATÉ AO PEITO
+					currentWork.setEndDate(data);
+					pastWorks:= pastWorks union {currentWork};
+					currentWork := undefined
+				);
+				
+				status := s;
+				return
+			);
+			
+		-- Changes the Person's address. --
 		public setAddress : String ==> ()
-												setAddress(a) == (address := a; return);
+			setAddress(a) == (address := a; return);
+			
+		-- Changes the Person's description. --
 		public setDescription : String ==> ()
-												setDescription(d) == (description := d; return);
+			setDescription(d) == (description := d; return);
+			
+		-- Changes the Person's CV. --
 		public setCV : String ==> ()
-												setCV(c) == (cv := c; return);
+			setCV(c) == (cv := c; return);
 		--END SETS--
 		
-		public commonContacts : Person ==> set of Person
-														commonContacts(p) ==
-														(
-															return p.getConnections() inter connections;
-														);
-		public addCV : String ==> ()
-										addCV(c) == (cv := c; return);
+		--START ADDS--
 		
+		-- Adds a past work to the existent set. --
+		-- It checks if the work is not in the set and if it was indeed added. --
+		public addPastWorks : Work ==> ()
+			addPastWorks(w) == (pastWorks := pastWorks union {w}; return)
+			pre w not in set pastWorks
+			post card pastWorks = card pastWorks~ + 1;
+		
+		-- Adds a skill to the existent set. --
+		-- It checks if the skill is not in the set and if it was indeed added. --
+		public addSkill : Skill ==> ()
+			addSkill(s) == (skills := skills union {s}; return)
+			pre s not in set skills
+			post card skills = card skills~ + 1;
+		
+		
+		-- Adds a education to the existent set. --
+		-- It checks if the education is not in the set and if it was indeed added. --
+		public addEducation : Education ==> ()
+			addEducation(e) == (education := education union {e}; return)
+			pre e not in set education
+			post card education = card education~ + 1;
+		
+		
+		-- Adds a language to the existent set. --
+		-- It checks if the language is not in the set and if it was indeed added. --
+		public addLanguage : Language ==> ()
+			addLanguage(l) == (languages := languages union {l}; return)
+			pre l not in set languages
+			post card languages = card languages~ + 1;
+			
+		-- Adds an interest to the existent set. --
+		-- It checks if the interest is not in the set and if it was indeed added. --
+		public addInterest : Interest ==> ()
+			addInterest(i) == (interests := interests union {i}; return)
+			pre i not in set interests
+			post card interests = card interests~ + 1;
+		
+		-- Adds a connection to the existent set. --
+		-- It checks if the connection is not in the set and if it was indeed added. --
+		public addConnection : Person ==> ()
+			addConnection(c) == (connections := connections union {c}; return)
+			pre c not in set connections
+			post card connections = card connections~ + 1;
+		--END ADDS--
+		
+		--START REMOVES--
+		
+		-- Removes a past work from the existent set. --
+		-- It checks if the work is in the set and if it was indeed removed. --
+		public removePastWork : Work ==> ()
+			removePastWork(w) == (pastWorks := pastWorks \ {w}; return)
+			pre w in set pastWorks
+			post card pastWorks = card pastWorks~ - 1;
+		
+		-- Removes a skill from the existent set. --
+		-- It checks if the skill is in the set and if it was indeed removed. --
+		public removeSkill : Skill ==> ()
+			removeSkill(s) == (skills := skills \ {s}; return)
+			pre s in set skills
+			post card skills = card skills~ - 1;
+		
+		-- Removes a education from the existent set. --
+		-- It checks if the education is in the set and if it was indeed removed. --	
+		public removeEducation : Education ==> ()
+			removeEducation(e) == (education := education \ {e}; return)
+			pre e in set education
+			post card education = card education~ - 1;
+		
+		-- Removes a language from the existent set. --
+		-- It checks if the language is in the set and if it was indeed removed. --
+		public removeLanguage : Language ==> ()
+			removeLanguage(l) == (languages := languages \ {l}; return)
+			pre l in set languages
+			post card languages = card languages~ - 1;
+		
+		-- Removes an interest from the existent set. --
+		-- It checks if the interest is in the set and if it was indeed removed. --	
+		public removeInterest : Interest ==> ()
+			removeInterest(i) == (interests := interests \ {i}; return)
+			pre i in set interests
+			post card interests = card interests~ - 1;
+		
+		-- Removes a connection from the existent set. --
+		-- It checks if the connection is in the set and if it was indeed removed. --
+		public removeConnection : Person ==> ()
+			removeConnection(c) == (connections := connections \ {c}; return)
+			pre c in set connections
+			post card connections = card connections~ - 1;
+		--END REMOVES
+		
+		-- Returns all of the common contacts between two persons. --
+		public commonContacts : Person ==> set of Person
+			commonContacts(p) ==
+			(
+				return p.getConnections() inter connections
+			);
+		
+		-- Returns the distance from one Person to the other. --
 		public distance : Person ==> nat
-											distance(p) == (
-												dcl retorno : set of Person;
-												for all connection in set connections do
-													if (connection not in set retorno)
-													then retorno := retorno union {connection};
-												return 0; -- foi para não dar erro
-											);
+			distance(p) ==
+			(
+				dcl retorno : set of Person;
+				for all connection in set connections do
+					if (connection not in set retorno)
+					then retorno := retorno union {connection};
+				return 0 -- foi para não dar erro
+			);
 end Person
