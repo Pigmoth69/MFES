@@ -23,3 +23,52 @@ class Language
 												pre h > 0 and h <= 10;
 		--END SETS--
 end Language
+
+class LanguageTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		lI : Language := new Language("Portuguese", 10);
+		lF : Language := new Language("English", 8);
+		
+	operations
+		
+	  -- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(lI.getName(), "Portuguese");
+	      assertEqual(lF.getName(), "English");
+	    );
+	  private testGetProeficiency: () ==> ()
+	    testGetProeficiency() ==
+	    (
+	      assertEqual(lI.getProeficiency(), 10);
+	      assertEqual(lF.getProeficiency(), 8);
+	    );
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  private testSetProeficiency: () ==> ()
+	  	testSetProeficiency() ==
+	  	(
+	  		assertEqual(lI.getProeficiency(), 10);
+	      assertEqual(lF.getProeficiency(), 8);
+	      
+	      lI.setProeficiency(8);
+	      lF.setProeficiency(10);
+	      
+	      assertEqual(lI.getProeficiency(), 8);
+	      assertEqual(lF.getProeficiency(), 10);
+	  	);
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : LanguageTest := new LanguageTest();
+        teste.testGetName();
+	      teste.testGetProeficiency();
+	      teste.testSetProeficiency();
+	    );
+		
+end LanguageTest

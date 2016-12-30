@@ -15,3 +15,29 @@ class Interest
 										getName() == (return name);
 		--END GETS--
 end Interest
+
+class InterestTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		lI : Interest := new Interest("Requirements Documents");
+		lF : Interest := new Interest("GTA V");
+		
+	operations
+		
+	  -- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(lI.getName(), "Requirements Documents");
+	      assertEqual(lF.getName(), "GTA V");
+	    );
+	  -- END GETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : InterestTest := new InterestTest();
+        teste.testGetName();
+	    );
+		
+end InterestTest

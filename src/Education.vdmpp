@@ -33,6 +33,81 @@ class Education
 		--START SETS--
 		public setEndDate : Date ==> ()
 												setEndDate(d) == (endDate := d; return)
+												pre d.compareDate(startDate);
 		--END SETS--
 		
 end Education
+
+class EducationTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+	
+		cF : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
+		cI : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
+		
+		dF : Date := new Date(2016, 10, 30);
+		dI : Date := new Date(2016, 10, 31);
+		
+		eF : Education := new Education(<Graduate>, cF, dF, "Mestrado Integrado Em Engenharia Informatica e Computacao");
+		eI : Education := new Education(<UnderGrad>, cI, dF, "Estagio Final");
+		
+	operations
+		
+	  -- START GETS --
+		private testGetTitle: () ==> ()
+	    testGetTitle() ==
+	    (
+	      assertEqual(eI.getTitle(), <UnderGrad>);
+	      assertEqual(eF.getTitle(), <Graduate>);
+	    );
+	  private testGetStartDate: () ==> ()
+	    testGetStartDate() ==
+	    (
+	      assertEqual(eI.getStartDate(), dF);
+	      assertEqual(eF.getStartDate(), dF);
+	    );
+	  private testGetEndDate: () ==> ()
+	    testGetEndDate() ==
+	    (
+	      assertEqual(eI.getEndDate(), dI);
+	      assertEqual(eF.getEndDate(), dI);
+	    );
+	  private testGetCompany: () ==> ()
+	    testGetCompany() ==
+	    (
+	      assertEqual(eI.getCompany(), cI);
+	      assertEqual(eF.getCompany(), cF);
+	    );
+    private testGetCourse: () ==> ()
+    testGetCourse() ==
+    (
+      assertEqual(eI.getCourse(), "Estagio Final");
+      assertEqual(eF.getCourse(), "Mestrado Integrado Em Engenharia Informatica e Computacao");
+    );
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  private testSetEndDate: () ==> ()
+	  	testSetEndDate() ==
+	  	(
+	      eI.setEndDate(dI);
+	      eF.setEndDate(dI);
+	      
+	      assertEqual(eI.getEndDate(), dI);
+	      assertEqual(eF.getEndDate(), dI);
+	  	);
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : EducationTest := new EducationTest();
+        teste.testGetTitle();
+        teste.testGetStartDate();
+        teste.testGetCompany();
+        teste.testGetCourse();
+        teste.testSetEndDate();
+        teste.testGetEndDate();
+	    );
+		
+end EducationTest

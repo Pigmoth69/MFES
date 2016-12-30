@@ -1,0 +1,51 @@
+class TestCaseLinkedIn
+	operations
+
+	-- Simulates assertion checking by reducing it to pre-condition checking.
+	-- If 'arg' does not hold, a pre-condition violation will be signaled.
+	protected assertTrue: bool ==> ()
+	assertTrue(arg) == 
+		return 
+	pre arg;
+  
+	-- Simulates assertion checking by reducing it to post-condition checking.
+	-- If values are not equal, prints a message in the console and generates 
+	-- a post-conditions violation.
+	protected assertEqual: ? * ? ==> ()
+	assertEqual(expected, actual) == 
+		if expected <> actual then (
+  			IO`print("Actual value (");
+  			IO`print(actual); 
+  			IO`print(") different from expected (");
+  			IO`print(expected);
+  			IO`println(")\n")
+		)
+	post expected = actual
+  
+end TestCaseLinkedIn
+
+
+class CompleteTestLinkedIn
+	instance variables
+		s : SkillTest := new SkillTest();
+		d : DateTest := new DateTest();
+		l : LanguageTest := new LanguageTest();
+		i : InterestTest := new InterestTest();
+		c : CompanyTest := new CompanyTest();
+		e : EducationTest := new EducationTest();
+		w : WorkTest := new WorkTest();
+	
+	operations
+		public main: () ==> ()
+	    main() ==
+	    (
+	    	s.main();
+	    	d.main();
+	    	l.main();
+	    	i.main();
+	    	c.main();
+	    	e.main();
+	    	w.main();
+	    );
+
+end CompleteTestLinkedIn

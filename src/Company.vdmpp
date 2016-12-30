@@ -37,3 +37,74 @@ class Company
 												setType(t) == (type := t; return);
 		--END SETS--
 end Company
+
+class CompanyTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		cI : Company := new Company("Primavera ERP");
+		cF : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
+		
+	operations
+		
+		-- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(cI.getName(), "Primavera ERP");
+	      assertEqual(cF.getName(), "Autoridade Tributaria e Aduaneira");
+	    );
+	  private testGetDescription: () ==> ()
+	    testGetDescription() ==
+	    (
+	      assertEqual(cF.getDescription(), "Recolher Impostos");
+	    );
+	  private testGetAddress: () ==> ()
+	    testGetAddress() ==
+	    (
+	      assertEqual(cF.getAddress(), "Avenida da Liberdade, nº40, 4400-200");
+	    );
+	  private testGetType: () ==> ()
+	    testGetType() ==
+	    (
+	      assertEqual(cF.getType(), <Public>);
+	    );
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  private testSetDescription: () ==> ()
+	  	testSetDescription() ==
+	  	(
+	      cI.setDescription("Faturas/Recibos");
+	      
+	      assertEqual(cI.getDescription(), "Faturas/Recibos");
+	  	);
+	  private testSetAddress: () ==> ()
+	  	testSetAddress() ==
+	  	(
+	      cI.setAddress("Rua Doutor Roberto Frias");
+	      
+	      assertEqual(cI.getAddress(), "Rua Doutor Roberto Frias");
+	  	);
+	  private testSetType: () ==> ()
+	  	testSetType() ==
+	  	(
+	      cI.setType(<School>);
+	      
+	      assertEqual(cI.getType(), <School>);
+	  	);
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : CompanyTest := new CompanyTest();
+	      teste.testGetName();
+	      teste.testGetDescription();
+	      teste.testGetAddress();
+	      teste.testGetType();
+	      teste.testSetDescription();
+	      teste.testSetAddress();
+	      teste.testSetType();
+	    );
+		
+end CompanyTest
