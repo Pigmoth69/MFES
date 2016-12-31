@@ -16,7 +16,8 @@ class TestCaseLinkedIn
 		if expected <> actual then (
   			IO`print("Actual value (");
   			IO`print(actual); 
-  			IO`print(") different from expected (");
+  			IO`print(") different from:\n");
+  			IO`print("expected (");
   			IO`print(expected);
   			IO`println(")\n")
 		)
@@ -34,6 +35,7 @@ class CompleteTestLinkedIn
 		c : CompanyTest := new CompanyTest();
 		e : EducationTest := new EducationTest();
 		w : WorkTest := new WorkTest();
+		p : PersonTest := new PersonTest();
 	
 	operations
 		public main: () ==> ()
@@ -46,6 +48,7 @@ class CompleteTestLinkedIn
 	    	c.main();
 	    	e.main();
 	    	w.main();
+	    	p.main();
 	    );
 
 end CompleteTestLinkedIn
