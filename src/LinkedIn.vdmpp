@@ -32,13 +32,29 @@ class LinkedIn
 					then person := p;
 				return person			
 			);
+		
+		public mediumDistance: () ==> nat
+			mediumDistance() ==
+			(
+				dcl num : nat := 0;
+				dcl den : nat := 0;
+				for all p in set persons do
+				(
+					for all p1 in set p.getConnections() do
+					(
+						num := num + p1.distance(p);
+						den := den + 1
+					);
+				);
+				return num / den;
+			);
 			
 		public searchPerson: String ==> set of Person
 			searchPerson(s)==
 			(
 				dcl res: set of Person:= {};
 					for all p in set persons do
-						if (p.getName() = s or p.getAddress() = s or p.getDescription()=s)
+						if (p.getName() = s or p.getDescription()=s)
 							then (res:= {p} union res);
 				return res			
 			)
@@ -130,10 +146,8 @@ class LinkedInTest is subclass of TestCaseLinkedIn
 	  private testSearchPerson: () ==> ()
 	  	testSearchPerson() ==
 	  	(
-	  		p1.setAddress("Rua Escola do Pisao, nº25 4415-214");
 	  		p1.setDescription("Preciso de comprar o GTA V");
 	  		assertEqual(l.searchPerson("Luis Figueiredo"), {p1});
-	  		assertEqual(l.searchPerson("Rua Escola do Pisao, nº25 4415-214"), {p1});
 	  		assertEqual(l.searchPerson("Preciso de comprar o GTA V"), {p1})
 	  	);
 	  

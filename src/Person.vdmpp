@@ -2,23 +2,17 @@ class Person
 	types
 		public String = seq of char;
 		
-		-- The gender of the person. --
-		public Gender = <Masculine> | <Feminine>;
-		
 		-- The status of the person, based on its work. --
 		public Status = <Unemployed> | <Student> | <Employed> | <Undefined>;
 		
 	instance variables
 	
 		private name : String;
-		private birthDate : Date;
-		private gender : Gender;
 		private currentWork : [Work];
 		
 		-- A set of all the previous works of the Person. --
 		private pastWorks : set of Work := {};
 		private status : Status := <Undefined>;
-		private address : String := "";
 		
 		-- A set of the all skills the Person has. --
 		private skills : set of Skill := {};
@@ -29,6 +23,8 @@ class Person
 		
 		-- A set of all the languages the Person has added to its LinkedIn Profile. --
 		private languages : set of Language := {};
+		
+		-- A set of all the interests the Person has added to its LinkedIn Profile. --
 		private interests : set of Interest := {};
 		private cv : String;
 		
@@ -46,15 +42,6 @@ class Person
 		-- Returns the name of the Person. --
 		public getName : () ==> String
 			getName() == (return name);	
-			
-		-- Returns the birth date of the Person. --
-		public getBirthDate : () ==> Date
-			getBirthDate() == (return birthDate);
-
-			
-		-- Returns the gender of the person. --
-		public getGender : () ==> Gender
-			getGender() == (return gender);
 			
 		-- Returns the current work of the person. --
 		public getCurrentWork : () ==> Work
@@ -78,10 +65,6 @@ class Person
 		-- Returns the status of the Person. --
 		public getStatus : () ==> Status
 			getStatus() == (return status);
-			
-		-- Returns the address of the Person. --
-		public getAddress : () ==> String
-			getAddress() == (return address);
 			
 		-- Returns all of the Person's skills. 
 		public getSkills : () ==> set of Skill
@@ -160,14 +143,6 @@ class Person
 		
 		--START SETS--
 		
-		-- Changes the Person's birth date. --
-		public setBirthDate : Date ==> ()
-			setBirthDate(d) == (birthDate := d; return);
-		
-		-- Changes the Person's gender. --
-		public setGender : Gender ==> ()
-			setGender(g) == (gender := g; return);
-		
 		-- Changes the Person's status. --
 		-- If the person goes from being employed, to unemployed, the current work ends and it's added to the past works set. --
 		public setStatus : Status ==> ()
@@ -185,10 +160,6 @@ class Person
 				status := s;
 				return
 			);
-			
-		-- Changes the Person's address. --
-		public setAddress : String ==> ()
-			setAddress(a) == (address := a; return);
 			
 		-- Changes the Person's description. --
 		public setDescription : String ==> ()
@@ -389,19 +360,6 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      assertEqual(pI.getName(), "Jose Miguel Botelho Mendes");
 	      assertEqual(pF.getName(), "Daniel da Silva Reis")
 	    );
-	  
-	  private testGetBirthDate: () ==> ()
-	  	testGetBirthDate() ==
-	  	(
-	  		assertEqual(pI.getBirthDate(), birthdayDate)
-	  	);
-	  
-	  private testGetGender: () ==> ()
-	  	testGetGender() ==
-	  	(
-	  		assertEqual(pI.getGender(), <Masculine>);
-	  		assertEqual(pF.getGender(), <Feminine>)
-	  	);
 	  	
 	  private testGetCurrentWork: () ==> ()
 	  	testGetCurrentWork() ==
@@ -431,13 +389,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  		temp := temp union {wFF};
 	  		assertEqual(pF.getPastWorks(), temp)
 	  	);
-	  	
-	  private testGetAddress : () ==> ()
-	  	testGetAddress() ==
-	  	(
-	  		assertEqual(pI.getAddress(), "Rua Escola do Pisao, nº25 4415-214")
-	  	);
-	  	
+	  
 	  private testGetSkills : () ==> ()
 	  	testGetSkills() ==
 	  	(
@@ -507,33 +459,12 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  -- END GETS --
 	  
 	  -- START SETS --
-	  private testSetBirthDate : () ==> ()
-	  	testSetBirthDate() ==
-	  	(
-	  		pI.setBirthDate(birthdayDate);
-	  		pF.setBirthDate(birthdayDate)
-	  	);
-	  	
-	  private testSetGender : () ==> ()
-	  	testSetGender() ==
-	  	(
-	  		pI.setGender(<Masculine>);
-	  		pF.setGender(<Feminine>)
-	  	);
-	  	
 	  private testSetStatus : () ==> ()
 	  	testSetStatus() ==
 	  	(
 	  		pI.setStatus(<Employed>);
 	  		pF.setStatus(<Employed>);
 	  		pF.setStatus(<Unemployed>)
-	  	);
-	  	
-	  private testSetAddress : () ==> ()
-	  	testSetAddress() ==
-	  	(
-	  		pI.setAddress("Rua Escola do Pisao, nº25 4415-214");
-	  		pF.setAddress("Rua Escola do Pisao, nº25 4415-214")
 	  	);
 	  	
 	  private testSetDescription : () ==> ()
@@ -676,9 +607,6 @@ class PersonTest is subclass of TestCaseLinkedIn
 	    (
 	    	dcl teste : PersonTest := new PersonTest();
 	      teste.testGetName();
-	      teste.testSetBirthDate();
-	      teste.testSetGender();
-	      teste.testSetAddress();
 	      teste.testSetDescription();
 	      teste.testSetCV();
 	      teste.testSetCurrentWork();
@@ -689,9 +617,6 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      teste.testAddInterest();
 	      teste.testAddConnection();
 	      teste.testGets();
-	      teste.testGetBirthDate();
-	      teste.testGetGender();
-	      teste.testGetAddress();
 	      teste.testGetDescription();
 	      teste.testGetCV();
 	      teste.testGetCurrentWork();
