@@ -7,6 +7,12 @@ class LinkedIn
 		
 	operations
 	
+		public getPersons : () ==> set of Person
+			getPersons() == (return persons);
+			
+		public getCompanies : () ==> set of Company
+			getCompanies() == (return companies);
+	
 		public addPerson: Person ==> () 
 			addPerson(p) == persons :=  {p} union persons
 			pre p not in set persons
@@ -16,40 +22,148 @@ class LinkedIn
 			addCompany(c) == companies :=  {c} union companies
 			pre c not in set companies
 			post companies =  {c} union companies~;
-			
+		
 		public mostConnections: () ==> Person
 			mostConnections() == 
 			(
-			dcl person : Person:= new Person();
-			for all p in set persons do
-			if card {p.getConnections()} > card {person.getConnections()}
-				then person := p;
-			return person;			
+				dcl person : Person:= new Person();
+				for all p in set persons do
+				if card p.getConnections() > card person.getConnections()
+					then person := p;
+				return person			
 			);
-			
-		public commonConnections: Person * Person ==> set of Person
-			commonConnections(p1,p2) == 
-			(
-			dcl res: set of Person:={};
-			
-			for all p in set p1.getConnections() do
-				if p in set p2.getConnections()
-					then res:= {p} union res;
-			return res;
-			)
-			pre p1 in set persons and p2 in set persons;
 			
 		public searchPerson: String ==> set of Person
 			searchPerson(s)==
 			(
 				dcl res: set of Person:= {};
 					for all p in set persons do
-						if p.getName() = s or p.getAddress() = s or p.getDescription()=s
-							then res:= {p}union persons;
-				return res;			
-					
-			);
+						if (p.getName() = s or p.getAddress() = s or p.getDescription()=s)
+							then (res:= {p} union res);
+				return res			
+			)
+			pre s <> [];
 
 end LinkedIn
+
+class LinkedInTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		l : LinkedIn := new LinkedIn();
+		p1 : Person := new Person("Luis Figueiredo"); 
+		p2 : Person := new Person("Diogo Moura");
+		p3 : Person := new Person("Antonio Ramadas");
+		p4 : Person := new Person("Pedro Castro");
+		p5 : Person := new Person("Paulino");
+		p6 : Person := new Person("Cigano do Codigo");
+		
+		c1 : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
+		c2 : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <School>);
+		
+	operations
+		
+	  -- START ADDS --
+		private testAddPerson: () ==> ()
+	    testAddPerson() ==
+	    (
+	    	dcl temp : set of Person := {};
+	    	temp := temp union {p1};
+	    	temp := temp union {p2};
+	    	temp := temp union {p3};
+	    	temp := temp union {p4};
+	    	temp := temp union {p5};
+	    	temp := temp union {p6};
+	    	
+	    	l.addPerson(p1);
+	    	l.addPerson(p2);
+	    	l.addPerson(p3);
+	    	l.addPerson(p4);
+	    	l.addPerson(p5);
+	    	l.addPerson(p6);
+	    	
+	      assertEqual(l.getPersons(), temp)
+	    );
+	  private testAddCompany: () ==> ()
+	    testAddCompany() ==
+	    (
+	    	dcl temp : set of Company := {};
+	    	temp := temp union {c1};
+	    	temp := temp union {c2};
+	    	
+	    	l.addCompany(c1);
+	    	l.addCompany(c2);
+	    	
+	      assertEqual(l.getCompanies(), temp)
+	    );
+	  -- END ADDS --
+	  
+	  -- START GETS --
+	  private testGetCompanies: () ==> ()
+	  	testGetCompanies() ==
+	  	(
+	  		dcl temp : set of Company := {};
+	    	temp := temp union {c1};
+	    	temp := temp union {c2};
+	      assertEqual(l.getCompanies(), temp)
+	  	);
+	  
+	  private testGetPersons: () ==> ()
+	  	testGetPersons() ==
+	  	(
+	  		dcl temp : set of Person := {};
+	    	temp := temp union {p1};
+	    	temp := temp union {p2};
+	    	temp := temp union {p3};
+	    	temp := temp union {p4};
+	    	temp := temp union {p5};
+	    	temp := temp union {p6};
+	      assertEqual(l.getPersons(), temp)
+	  	);
+	  -- END GETS --
+	  
+	  private testMostConnections: () ==> ()
+	  	testMostConnections() ==
+	  	(
+	  		assertEqual(l.mostConnections(), p1)
+	  	);
+	  	
+	  private testSearchPerson: () ==> ()
+	  	testSearchPerson() ==
+	  	(
+	  		p1.setAddress("Rua Escola do Pisao, nº25 4415-214");
+	  		p1.setDescription("Preciso de comprar o GTA V");
+	  		assertEqual(l.searchPerson("Luis Figueiredo"), {p1});
+	  		assertEqual(l.searchPerson("Rua Escola do Pisao, nº25 4415-214"), {p1});
+	  		assertEqual(l.searchPerson("Preciso de comprar o GTA V"), {p1})
+	  	);
+	  
+	  private testPopulateConnections: () ==> ()
+	  	testPopulateConnections() ==
+	  	(
+	     	p1.addConnection(p2);
+	     	p1.addConnection(p3);
+	     	p1.addConnection(p6);
+	     	p2.addConnection(p4);
+	     	p2.addConnection(p5);
+	     	p3.addConnection(p6)
+	  	);
+	  	
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : LinkedInTest := new LinkedInTest();
+	      
+	    	teste.testPopulateConnections();
+	    	
+        teste.testAddCompany();
+	      teste.testAddPerson();
+	      teste.testGetCompanies();
+	      teste.testGetPersons();
+	      teste.testSearchPerson();
+	      
+	      teste.testMostConnections()
+	    );
+
+end LinkedInTest
 
 

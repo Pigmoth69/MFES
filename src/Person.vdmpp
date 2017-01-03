@@ -18,14 +18,14 @@ class Person
 		-- A set of all the previous works of the Person. --
 		private pastWorks : set of Work := {};
 		private status : Status := <Undefined>;
-		private address : String;
+		private address : String := "";
 		
 		-- A set of the all skills the Person has. --
 		private skills : set of Skill := {};
 		
 		-- A set of all the previous Schools the Person frequented. --
 		private education : set of Education := {};
-		private description : String;
+		private description : String := "";
 		
 		-- A set of all the languages the Person has added to its LinkedIn Profile. --
 		private languages : set of Language := {};
@@ -277,12 +277,12 @@ class PersonTest is subclass of TestCaseLinkedIn
 		pI : Person := new Person("Jose Miguel Botelho Mendes");
 		pF : Person := new Person("Daniel da Silva Reis");
 		p1 : Person := new Person("Luis Figueiredo"); 
-		p2 : Person := new Person("Diogo Moura"); --
+		p2 : Person := new Person("Diogo Moura");
 		p3 : Person := new Person("Antonio Ramadas");
 		p4 : Person := new Person("Pedro Castro");
 		p5 : Person := new Person("Paulino");
 		p6 : Person := new Person("Cigano do Codigo");
-		p7 : Person := new Person("teste123"); --
+		p7 : Person := new Person("teste123");
 		
 		cF : Company := new Company("Faculdade de Engenharia da Universidade do Porto", "Formar Pessoas", "Rua Doutor Roberto Frias", <School>);
 		cI : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
