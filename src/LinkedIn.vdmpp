@@ -32,14 +32,19 @@ class LinkedIn
 			post companies =  {c} union companies~;
 		
 		-- Returns the person with the most connections in LinkedIn. --
-		public mostConnections: () ==> Person
+		public mostConnections: () ==> [Person]
 			mostConnections() == 
 			(
 				dcl person : Person:= new Person();
-				for all p in set persons do
-				if card p.getConnections() > card person.getConnections()
-					then person := p;
-				return person	
+				if card persons > 0
+				then 
+				(
+					for all p in set persons do
+					if card p.getConnections() > card person.getConnections()
+						then person := p;
+					return person
+				)
+				else return nil
 			);
 		
 		-- Returns the medium distance between all the people in LinkedIn. --
@@ -47,16 +52,20 @@ class LinkedIn
 			mediumDistance() ==
 			(
 				dcl num : nat := 0;
+				dcl b : bool := false;
 				dcl den : nat := 0;
 				for all p in set persons do
 				(
 					for all p1 in set p.getConnections() do
 					(
+						b := true;
 						num := num + p1.distance(p);
 						den := den + 1
 					);
 				);
-				return num / den;
+				if (not b)
+					then return -1
+				else return num / den;
 			);
 		
 		-- Receives a string and returns the Person with the name or description equal to the string. --

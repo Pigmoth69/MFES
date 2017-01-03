@@ -169,7 +169,8 @@ class Person
 			setCV(c) == (cv := c; return);
 			
 		public setCurrentWork : Work ==> ()
-			setCurrentWork(w) == (currentWork := w; return);
+			setCurrentWork(w) == (currentWork := w; status := <Employed>; return)
+			pre status <> <Employed>;
 		--END SETS--
 		
 		--START ADDS--
