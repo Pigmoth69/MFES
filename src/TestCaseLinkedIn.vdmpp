@@ -36,6 +36,7 @@ class CompleteTestLinkedIn
 		e : EducationTest := new EducationTest();
 		w : WorkTest := new WorkTest();
 		p : PersonTest := new PersonTest();
+		linkedIn : LinkedInTest := new LinkedInTest();
 	
 	operations
 		public main: () ==> ()
@@ -49,6 +50,7 @@ class CompleteTestLinkedIn
 	    	e.main();
 	    	w.main();
 	    	p.main();
+	    	linkedIn.main()
 	    );
 
 end CompleteTestLinkedIn
