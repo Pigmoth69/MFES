@@ -1,11 +1,17 @@
 class Main
   instance variables
-  	linkedIn : LinkedIn := new LinkedIn();
-	  public d : Date := new Date(10, 10, 10);
-	  public c : Company := new Company("WOW", "descricao", "endereco", <Private>);
-	  public w : Work := new Work("CEO", d, c);
+  	private linkedIn : LinkedIn := new LinkedIn();
+	  --public d : Date := new Date(10, 10, 10);
+	  --public c : Company := new Company("WOW", "descricao", "endereco", <Private>);
+	  --public w : Work := new Work("CEO", d, c);
   	
   operations                
 	  public Main: () ==> Main
-						      Main() == (return self);
+		Main() == 
+		(
+		return self 
+		);
 end Main
+
+
+-- procurar pessoas, calcular os contactos comuns entre duas pessoas, determinar a pessoa com mais contactos

@@ -7,7 +7,7 @@ class Education
 		private company : [Company];
 		private title : Title;
 		private startDate : [Date];
-		private endDate : Date;
+		private endDate : [Date] := nil;
 		private course : String;
 		
 		inv startDate <> nil;
