@@ -7,19 +7,80 @@ class Date
 		private month : nat;
 		private day : nat;
 	operations
+		
+		-- Creates a new date given its year, month and day. --
 		public Date: nat * nat * nat ==> Date
-						      Date(y, m, d) == (year := y; month := m; day := d; return self)
-						      pre y > 0 and m > 0 and m <= 12 and d > 0 and d <= 31;
+	    Date(y, m, d) == (year := y; month := m; day := d; return self)
+	    pre y > 0 and m > 0 and m <= 12 and d > 0 and d <= 31;
+	    
 		--START GETS--
-		public getYear : () ==> nat
-										getYear() == (return year);	
-		public getMonth : () ==> nat
-										getMonth() == (return month);	
-		public getDay : () ==> nat
-										getDay() == (return day);
+		
+		-- Returns the year of the date --
+		pure public getYear : () ==> nat
+			getYear() == (return year);	
+			
+		-- Returns the month of the date --
+		pure public getMonth : () ==> nat
+			getMonth() == (return month);	
+			
+		-- Returns the day of the date --
+		pure public getDay : () ==> nat
+			getDay() == (return day);
 		--END GETS--
-		public compareDate : Date ==> bool
-										compareDate(d) == (
-											return ( (d.getYear() * d.getMonth() * d.getDay()) < (year * month * day) )
-										);
+		
+		-- Compares two dates like date1.compareDate(date2). --
+		-- If the date1 is "bigger" than the date 2, returns true. Else, returns false -- 
+		pure public compareDate : Date ==> bool
+			compareDate(d) == (
+				return ( (d.getYear() * d.getMonth() * d.getDay()) < (year * month * day) )
+			);
+			
 end Date
+
+class DateTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		dI : Date := new Date(2016, 12, 30);
+		dF : Date := new Date(2016, 10, 30);
+		
+	operations
+		
+		private testCompareDate: () ==> ()
+	    testCompareDate() ==
+	    (
+	      assertEqual(dI.compareDate(dF), true);
+	      assertEqual(dF.compareDate(dI), false);
+	    );
+	    
+	  -- START GETS --
+	  private testGetYear: () ==> ()
+	    testGetYear() ==
+	    (
+	      assertEqual(dI.getYear(), 2016);
+	      assertEqual(dF.getYear(), 2016);
+	    );
+	  private testGetMonth: () ==> ()
+	    testGetMonth() ==
+	    (
+	      assertEqual(dI.getMonth(), 12);
+	      assertEqual(dF.getMonth(), 10);
+	    );
+	  private testGetDay: () ==> ()
+	    testGetDay() ==
+	    (
+	      assertEqual(dI.getDay(), 30);
+	      assertEqual(dF.getDay(), 30);
+	    );
+	  -- END GETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : DateTest := new DateTest();
+        teste.testCompareDate();
+	      teste.testGetYear();
+	      teste.testGetMonth();
+	      teste.testGetDay();
+	    );
+		
+end DateTest

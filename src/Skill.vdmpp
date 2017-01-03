@@ -4,22 +4,81 @@ class Skill
 	
 	instance variables
 		private name : String;
+		
+		-- The user's hability in the Skill. It varies from 1 to 10. --
 		private hability : nat;
 	
 	operations
+	
+		-- Creates a new Skill, given its name and the user's hability in it. --
 		public Skill: String * nat ==> Skill
-						      Skill(n, h) == (name := n; hability := h; return self)
-						      pre h > 0 and h <= 10 and n <> [];
+      Skill(n, h) == (name := n; hability := h; return self)
+      pre h > 0 and h <= 10 and n <> [];
 		--START GETS--
+		
+		-- Returns the name of the Skill. --
 		public getName : () ==> String
-										getName() == (return name);	
+			getName() == (return name);	
+			
+		-- Returns the user's hability in the Skill. --
 		public getHability : () ==> nat
-										getHability() == (return hability);
+			getHability() == (return hability);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Changes the user's hability in the Skill. --
 		public setHability : nat ==> ()
-												setHability(h) == (hability := h; return)
-												pre h > 0 and h <= 10;
+			setHability(h) == (hability := h; return)
+			pre h > 0 and h <= 10;
 		--END SETS--
 end Skill
+
+class SkillTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		sI : Skill := new Skill("JAVA", 10);
+		sF : Skill := new Skill("Alloy", 2);
+		
+	operations
+		
+		-- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(sI.getName(), "JAVA");
+	      assertEqual(sF.getName(), "Alloy");
+	    );
+	  private testGetHability: () ==> ()
+	    testGetHability() ==
+	    (
+	      assertEqual(sI.getHability(), 10);
+	      assertEqual(sF.getHability(), 2);
+	    );
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  private testSetHability: () ==> ()
+	  	testSetHability() ==
+	  	(
+	  		assertEqual(sI.getHability(), 10);
+	      assertEqual(sF.getHability(), 2);
+	      
+	      sI.setHability(8);
+	      sF.setHability(1);
+	      
+	      assertEqual(sI.getHability(), 8);
+	      assertEqual(sF.getHability(), 1);
+	  	);
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : SkillTest := new SkillTest();
+	      teste.testGetName();
+	      teste.testGetHability();
+	      teste.testSetHability();
+	    );
+		
+end SkillTest

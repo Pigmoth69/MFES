@@ -1,6 +1,8 @@
 class Company
 	types
 		public String = seq of char;
+		
+		-- This is the type of the company. It can either be a School, a Private Company, or a Public one.
 		public Type = <School> | <Private> | <Public>;
 	
 	instance variables
@@ -10,30 +12,117 @@ class Company
 		private type : Type;
 	
 	operations
+		-- Create a new Company with all given parameters --
 		public Company: String * String * String * Type ==> Company
-						      Company(n, d, a, t) == (name := n; description := d; address := a; type := t; return self)
-						      pre n <> [];
-						
+      Company(n, d, a, t) == (name := n; description := d; address := a; type := t; return self)
+      pre n <> [] and d <> [] and a <> [];
+		
+		-- Create a new company only with a given name --
 		public Company : String ==> Company
-									Company(n) == (name := n; return self)
-									pre n <> [];
+			Company(n) == (name := n; return self)
+			pre n <> [];
 		--START GETS--
+		
+		-- Returns the name of the company --
 		public getName : () ==> String
-										getName() == (return name);
+			getName() == (return name);
+										
+		-- Returns the description of the company --
 		public getDescription : () ==> String
-										getDescription() == (return description);
+			getDescription() == (return description);
+										
+		-- Returns the address of the company --
 		public getAddress : () ==> String
-										getAddress() == (return address);
-		public getType : () ==> Type
-										getType() == (return type);
+			getAddress() == (return address);
+			
+		-- Returns the type of the company --
+		pure public getType : () ==> Type
+			getType() == (return type);
 		--END GETS--
 		
 		--START SETS--
+		
+		-- Changes the description of the company --
 		public setDescription : String ==> ()
-												setDescription(d) == (description := d; return);
+			setDescription(d) == (description := d; return);
+			
+		-- Changes the address of the company --
 		public setAddress : String ==> ()
-												setAddress(a) == (address := a; return);
+			setAddress(a) == (address := a; return);
+			
+		-- Changes the type of the company --
 		public setType : Type ==> ()
-												setType(t) == (type := t; return);
+			setType(t) == (type := t; return);
 		--END SETS--
 end Company
+
+class CompanyTest is subclass of TestCaseLinkedIn
+	
+	instance variables
+		cI : Company := new Company("Primavera ERP");
+		cF : Company := new Company("Autoridade Tributaria e Aduaneira", "Recolher Impostos", "Avenida da Liberdade, nº40, 4400-200", <Public>);
+		
+	operations
+		
+		-- START GETS --
+		private testGetName: () ==> ()
+	    testGetName() ==
+	    (
+	      assertEqual(cI.getName(), "Primavera ERP");
+	      assertEqual(cF.getName(), "Autoridade Tributaria e Aduaneira");
+	    );
+	  private testGetDescription: () ==> ()
+	    testGetDescription() ==
+	    (
+	      assertEqual(cF.getDescription(), "Recolher Impostos");
+	    );
+	  private testGetAddress: () ==> ()
+	    testGetAddress() ==
+	    (
+	      assertEqual(cF.getAddress(), "Avenida da Liberdade, nº40, 4400-200");
+	    );
+	  private testGetType: () ==> ()
+	    testGetType() ==
+	    (
+	      assertEqual(cF.getType(), <Public>);
+	    );
+	  -- END GETS --
+	  
+	  -- START SETS --
+	  private testSetDescription: () ==> ()
+	  	testSetDescription() ==
+	  	(
+	      cI.setDescription("Faturas/Recibos");
+	      
+	      assertEqual(cI.getDescription(), "Faturas/Recibos");
+	  	);
+	  private testSetAddress: () ==> ()
+	  	testSetAddress() ==
+	  	(
+	      cI.setAddress("Rua Doutor Roberto Frias");
+	      
+	      assertEqual(cI.getAddress(), "Rua Doutor Roberto Frias");
+	  	);
+	  private testSetType: () ==> ()
+	  	testSetType() ==
+	  	(
+	      cI.setType(<School>);
+	      
+	      assertEqual(cI.getType(), <School>);
+	  	);
+	  -- END SETS --
+	    
+    public static main: () ==> ()
+	    main() ==
+	    (
+	    	dcl teste : CompanyTest := new CompanyTest();
+	      teste.testGetName();
+	      teste.testGetDescription();
+	      teste.testGetAddress();
+	      teste.testGetType();
+	      teste.testSetDescription();
+	      teste.testSetAddress();
+	      teste.testSetType();
+	    );
+		
+end CompanyTest
