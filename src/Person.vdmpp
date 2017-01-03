@@ -2,23 +2,20 @@ class Person
 	types
 		public String = seq of char;
 		
-		-- The gender of the person. --
-		public Gender = <Masculine> | <Feminine>;
-		
 		-- The status of the person, based on its work. --
 		public Status = <Unemployed> | <Student> | <Employed> | <Undefined>;
 		
 	instance variables
-	
+		
+		-- The name of the Person. --
 		private name : String;
-		private birthDate : Date;
-		private gender : Gender;
+		
+		-- The current Work of the Person. --
 		private currentWork : [Work];
 		
 		-- A set of all the previous works of the Person. --
 		private pastWorks : set of Work := {};
 		private status : Status := <Undefined>;
-		private address : String := "";
 		
 		-- A set of the all skills the Person has. --
 		private skills : set of Skill := {};
@@ -29,6 +26,8 @@ class Person
 		
 		-- A set of all the languages the Person has added to its LinkedIn Profile. --
 		private languages : set of Language := {};
+		
+		-- A set of all the interests the Person has added to its LinkedIn Profile. --
 		private interests : set of Interest := {};
 		private cv : String;
 		
@@ -45,15 +44,7 @@ class Person
 		
 		-- Returns the name of the Person. --
 		public getName : () ==> String
-			getName() == (return name);	
-			
-		-- Returns the birth date of the Person. --
-		public getBirthDate : () ==> Date
-			getBirthDate() == (return birthDate);
-			
-		-- Returns the gender of the person. --
-		public getGender : () ==> Gender
-			getGender() == (return gender);
+			getName() == (return name);
 			
 		-- Returns the current work of the person. --
 		public getCurrentWork : () ==> Work
@@ -63,21 +54,49 @@ class Person
 		public getPastWorks : () ==> set of Work
 			getPastWorks() == (return pastWorks);
 			
+		-- Returns a work based on its name, from the set of pastWorks of the Person. --
+		public getWorkByName : String ==> [Work]
+			getWorkByName(l) ==
+			(
+				for all work in set pastWorks do
+					if l = work.getCompany().getName()
+						then return work;
+				return nil
+			);
+			
 		-- Returns the status of the Person. --
 		public getStatus : () ==> Status
 			getStatus() == (return status);
-			
-		-- Returns the address of the Person. --
-		public getAddress : () ==> String
-			getAddress() == (return address);
 			
 		-- Returns all of the Person's skills. 
 		public getSkills : () ==> set of Skill
 			getSkills() == (return skills);
 			
+		-- Returns a skill based on its name, from the set of skills of the Person. --
+		public getSkillByName : String ==> [Skill]
+			getSkillByName(l) ==
+			(
+				for all skill in set skills do
+					if l = skill.getName()
+						then return skill;
+				return nil
+			);
+			
 		-- Returns all of the Person's schools he frequented. --
 		public getEducation : () ==> set of Education
 			getEducation() == (return education);
+			
+		-- Returns an education based on its name, from the set of educations of the Person. --
+		public getEducationByName : String ==> [Education]
+			getEducationByName(l) ==
+			(
+				for all e in set education do
+				(
+					if l = e.getCompany().getName()
+						then return e
+				);
+				return nil
+			);
 			
 		-- Returns a description of the Person. --
 		public getDescription : () ==> String
@@ -87,9 +106,30 @@ class Person
 		public getLanguages : () ==> set of Language
 			getLanguages() == (return languages);
 			
+		-- Returns a language based on its name, from the set of languages of the Person. --
+		public getLanguageByName : String ==> [Language]
+			getLanguageByName(l) ==
+			(
+				for all language in set languages do
+					if l = language.getName()
+						then return language;
+				return nil
+			);
+			
 		-- Returns all of the Person's interests. --
 		public getInterests : () ==> set of Interest
 			getInterests() == (return interests);
+		
+		-- Returns an interest based on its name, from the set of interests of the Person. --
+		public getInterestByName : String ==> [Interest]
+			getInterestByName(i) ==
+			(
+				dcl t : Interest := new Interest();
+				for all interest in set interests do
+					(if i = interest.getName()
+						then return interest);
+				return nil
+			);
 			
 		-- Returns the Person's CV. --
 		public getCV : () ==> String
@@ -102,14 +142,6 @@ class Person
 		
 		--START SETS--
 		
-		-- Changes the Person's birth date. --
-		public setBirthDate : Date ==> ()
-			setBirthDate(d) == (birthDate := d; return);
-		
-		-- Changes the Person's gender. --
-		public setGender : Gender ==> ()
-			setGender(g) == (gender := g; return);
-		
 		-- Changes the Person's status. --
 		-- If the person goes from being employed, to unemployed, the current work ends and it's added to the past works set. --
 		public setStatus : Status ==> ()
@@ -118,7 +150,7 @@ class Person
 				if (status = <Employed> and s = <Unemployed>)
 				then
 				(
-					dcl data : Date := new Date(2016,12,30); -- ATÉ AO PEITO
+					dcl data : Date := new Date(2017,12,30); -- ATÉ AO PEITO
 					currentWork.setEndDate(data);
 					pastWorks:= pastWorks union {currentWork};
 					currentWork := nil
@@ -127,10 +159,6 @@ class Person
 				status := s;
 				return
 			);
-			
-		-- Changes the Person's address. --
-		public setAddress : String ==> ()
-			setAddress(a) == (address := a; return);
 			
 		-- Changes the Person's description. --
 		public setDescription : String ==> ()
@@ -151,14 +179,14 @@ class Person
 		public addPastWorks : Work ==> ()
 			addPastWorks(w) == (pastWorks := pastWorks union {w}; return)
 			pre w not in set pastWorks
-			post card pastWorks = card pastWorks~ + 1;
+			post pastWorks = pastWorks~ union {w};
 		
 		-- Adds a skill to the existent set. --
 		-- It checks if the skill is not in the set and if it was indeed added. --
 		public addSkill : Skill ==> ()
 			addSkill(s) == (skills := skills union {s}; return)
 			pre s not in set skills
-			post card skills = card skills~ + 1;
+			post  skills = skills~ union {s};
 		
 		
 		-- Adds a education to the existent set. --
@@ -166,7 +194,7 @@ class Person
 		public addEducation : Education ==> ()
 			addEducation(e) == (education := education union {e}; return)
 			pre e not in set education
-			post card education = card education~ + 1;
+			post education = education~ union {e};
 		
 		
 		-- Adds a language to the existent set. --
@@ -174,21 +202,21 @@ class Person
 		public addLanguage : Language ==> ()
 			addLanguage(l) == (languages := languages union {l}; return)
 			pre l not in set languages
-			post card languages = card languages~ + 1;
+			post languages = languages~ union {l};
 			
 		-- Adds an interest to the existent set. --
 		-- It checks if the interest is not in the set and if it was indeed added. --
 		public addInterest : Interest ==> ()
 			addInterest(i) == (interests := interests union {i}; return)
 			pre i not in set interests
-			post card interests = card interests~ + 1;
+			post interests = interests~ union {i};
 		
 		-- Adds a connection to the existent set. --
 		-- It checks if the connection is not in the set and if it was indeed added. --
 		public addConnection : Person ==> ()
 			addConnection(c) == (connections := connections union {c}; return)
-			pre c not in set connections
-			post card connections = card connections~ + 1;
+			pre c not in set connections and c <> self
+			post connections = connections~ union {c};
 		--END ADDS--
 		
 		--START REMOVES--
@@ -198,42 +226,42 @@ class Person
 		public removePastWork : Work ==> ()
 			removePastWork(w) == (pastWorks := pastWorks \ {w}; return)
 			pre w in set pastWorks
-			post card pastWorks = card pastWorks~ - 1;
+			post {} = pastWorks inter {w};
 		
 		-- Removes a skill from the existent set. --
 		-- It checks if the skill is in the set and if it was indeed removed. --
 		public removeSkill : Skill ==> ()
 			removeSkill(s) == (skills := skills \ {s}; return)
 			pre s in set skills
-			post card skills = card skills~ - 1;
+			post {} = skills inter {s};
 		
 		-- Removes a education from the existent set. --
 		-- It checks if the education is in the set and if it was indeed removed. --	
 		public removeEducation : Education ==> ()
 			removeEducation(e) == (education := education \ {e}; return)
 			pre e in set education
-			post card education = card education~ - 1;
+			post {} = education inter {e};
 		
 		-- Removes a language from the existent set. --
 		-- It checks if the language is in the set and if it was indeed removed. --
 		public removeLanguage : Language ==> ()
 			removeLanguage(l) == (languages := languages \ {l}; return)
 			pre l in set languages
-			post card languages = card languages~ - 1;
+			post {} = languages inter {l};
 		
 		-- Removes an interest from the existent set. --
 		-- It checks if the interest is in the set and if it was indeed removed. --	
 		public removeInterest : Interest ==> ()
 			removeInterest(i) == (interests := interests \ {i}; return)
 			pre i in set interests
-			post card interests = card interests~ - 1;
+			post {} = interests inter {};
 		
 		-- Removes a connection from the existent set. --
 		-- It checks if the connection is in the set and if it was indeed removed. --
 		public removeConnection : Person ==> ()
 			removeConnection(c) == (connections := connections \ {c}; return)
-			pre c in set connections
-			post card connections = card connections~ - 1;
+			pre c in set connections and c <> self
+			post {} = connections inter {};
 		--END REMOVES
 		
 		-- Returns all of the common contacts between two persons. --
@@ -241,7 +269,8 @@ class Person
 			commonContacts(p) ==
 			(
 				return p.getConnections() inter connections
-			);
+			)
+			pre p <> self;
 		
 		-- Returns the distance from one Person to the other. --
 		public distance : Person ==> nat
@@ -269,7 +298,8 @@ class Person
 					distancia := distancia + 1
 				);
 				return distancia;
-			);
+			)
+			pre p <> self;
 end Person
 
 class PersonTest is subclass of TestCaseLinkedIn
@@ -331,19 +361,6 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      assertEqual(pI.getName(), "Jose Miguel Botelho Mendes");
 	      assertEqual(pF.getName(), "Daniel da Silva Reis")
 	    );
-	  
-	  private testGetBirthDate: () ==> ()
-	  	testGetBirthDate() ==
-	  	(
-	  		assertEqual(pI.getBirthDate(), birthdayDate)
-	  	);
-	  
-	  private testGetGender: () ==> ()
-	  	testGetGender() ==
-	  	(
-	  		assertEqual(pI.getGender(), <Masculine>);
-	  		assertEqual(pF.getGender(), <Feminine>)
-	  	);
 	  	
 	  private testGetCurrentWork: () ==> ()
 	  	testGetCurrentWork() ==
@@ -373,13 +390,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  		temp := temp union {wFF};
 	  		assertEqual(pF.getPastWorks(), temp)
 	  	);
-	  	
-	  private testGetAddress : () ==> ()
-	  	testGetAddress() ==
-	  	(
-	  		assertEqual(pI.getAddress(), "Rua Escola do Pisao, nº25 4415-214")
-	  	);
-	  	
+	  
 	  private testGetSkills : () ==> ()
 	  	testGetSkills() ==
 	  	(
@@ -436,36 +447,25 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  		temp := temp union {p2};
 	  		assertEqual(pI.getConnections(), temp)
 	  	);
+	  	
+	  private testGets: () ==> ()
+	  	testGets() ==
+	  	(
+	  		assertEqual(pI.getSkillByName("JAVA"),s1);
+	  		assertEqual(pI.getLanguageByName("English"),l2);
+	  		assertEqual(pI.getInterestByName("GTA IV"), i3);
+	  		assertEqual(pI.getEducationByName("Autoridade Tributaria e Aduaneira"),eI);
+	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI)
+	  	);
 	  -- END GETS --
 	  
 	  -- START SETS --
-	  private testSetBirthDate : () ==> ()
-	  	testSetBirthDate() ==
-	  	(
-	  		pI.setBirthDate(birthdayDate);
-	  		pF.setBirthDate(birthdayDate)
-	  	);
-	  	
-	  private testSetGender : () ==> ()
-	  	testSetGender() ==
-	  	(
-	  		pI.setGender(<Masculine>);
-	  		pF.setGender(<Feminine>)
-	  	);
-	  	
 	  private testSetStatus : () ==> ()
 	  	testSetStatus() ==
 	  	(
 	  		pI.setStatus(<Employed>);
 	  		pF.setStatus(<Employed>);
 	  		pF.setStatus(<Unemployed>)
-	  	);
-	  	
-	  private testSetAddress : () ==> ()
-	  	testSetAddress() ==
-	  	(
-	  		pI.setAddress("Rua Escola do Pisao, nº25 4415-214");
-	  		pF.setAddress("Rua Escola do Pisao, nº25 4415-214")
 	  	);
 	  	
 	  private testSetDescription : () ==> ()
@@ -608,9 +608,6 @@ class PersonTest is subclass of TestCaseLinkedIn
 	    (
 	    	dcl teste : PersonTest := new PersonTest();
 	      teste.testGetName();
-	      teste.testSetBirthDate();
-	      teste.testSetGender();
-	      teste.testSetAddress();
 	      teste.testSetDescription();
 	      teste.testSetCV();
 	      teste.testSetCurrentWork();
@@ -620,9 +617,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      teste.testAddLanguage();
 	      teste.testAddInterest();
 	      teste.testAddConnection();
-	      teste.testGetBirthDate();
-	      teste.testGetGender();
-	      teste.testGetAddress();
+	      teste.testGets();
 	      teste.testGetDescription();
 	      teste.testGetCV();
 	      teste.testGetCurrentWork();
