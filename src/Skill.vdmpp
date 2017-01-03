@@ -5,32 +5,32 @@ class Skill
 	instance variables
 		private name : String;
 		
-		-- The user's hability in the Skill. It varies from 1 to 10. --
-		private hability : nat;
+		-- The user's ability in the Skill. It varies from 1 to 10. --
+		private ability : nat;
 	
 	operations
 	
-		-- Creates a new Skill, given its name and the user's hability in it. --
+		-- Creates a new Skill, given its name and the user's ability in it. --
 		public Skill: String * nat ==> Skill
-      Skill(n, h) == (name := n; hability := h; return self)
-      pre h > 0 and h <= 10 and n <> [];
+      Skill(n, a) == (name := n; ability := a; return self)
+      pre a > 0 and a <= 10 and n <> [];
 		--START GETS--
 		
 		-- Returns the name of the Skill. --
 		public getName : () ==> String
 			getName() == (return name);	
 			
-		-- Returns the user's hability in the Skill. --
-		public getHability : () ==> nat
-			getHability() == (return hability);
+		-- Returns the user's ability in the Skill. --
+		public getAbility : () ==> nat
+			getAbility() == (return ability);
 		--END GETS--
 		
 		--START SETS--
 		
-		-- Changes the user's hability in the Skill. --
-		public setHability : nat ==> ()
-			setHability(h) == (hability := h; return)
-			pre h > 0 and h <= 10;
+		-- Changes the user's ability in the Skill. --
+		public setAbility : nat ==> ()
+			setAbility(a) == (ability := a; return)
+			pre a > 0 and a <= 10;
 		--END SETS--
 end Skill
 
@@ -49,26 +49,26 @@ class SkillTest is subclass of TestCaseLinkedIn
 	      assertEqual(sI.getName(), "JAVA");
 	      assertEqual(sF.getName(), "Alloy");
 	    );
-	  private testGetHability: () ==> ()
-	    testGetHability() ==
+	  private testGetAbility: () ==> ()
+	    testGetAbility() ==
 	    (
-	      assertEqual(sI.getHability(), 10);
-	      assertEqual(sF.getHability(), 2);
+	      assertEqual(sI.getAbility(), 10);
+	      assertEqual(sF.getAbility(), 2);
 	    );
 	  -- END GETS --
 	  
 	  -- START SETS --
-	  private testSetHability: () ==> ()
-	  	testSetHability() ==
+	  private testSetAbility: () ==> ()
+	  	testSetAbility() ==
 	  	(
-	  		assertEqual(sI.getHability(), 10);
-	      assertEqual(sF.getHability(), 2);
+	  		assertEqual(sI.getAbility(), 10);
+	      assertEqual(sF.getAbility(), 2);
 	      
-	      sI.setHability(8);
-	      sF.setHability(1);
+	      sI.setAbility(8);
+	      sF.setAbility(1);
 	      
-	      assertEqual(sI.getHability(), 8);
-	      assertEqual(sF.getHability(), 1);
+	      assertEqual(sI.getAbility(), 8);
+	      assertEqual(sF.getAbility(), 1);
 	  	);
 	  -- END SETS --
 	    
@@ -77,8 +77,8 @@ class SkillTest is subclass of TestCaseLinkedIn
 	    (
 	    	dcl teste : SkillTest := new SkillTest();
 	      teste.testGetName();
-	      teste.testGetHability();
-	      teste.testSetHability();
+	      teste.testGetAbility();
+	      teste.testSetAbility();
 	    );
 		
 end SkillTest
