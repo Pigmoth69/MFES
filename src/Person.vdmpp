@@ -50,6 +50,7 @@ class Person
 		-- Returns the birth date of the Person. --
 		public getBirthDate : () ==> Date
 			getBirthDate() == (return birthDate);
+
 			
 		-- Returns the gender of the person. --
 		public getGender : () ==> Gender
@@ -63,6 +64,17 @@ class Person
 		public getPastWorks : () ==> set of Work
 			getPastWorks() == (return pastWorks);
 			
+		-- Returns a work based on its name, from the set of pastWorks of the Person. --
+		public getWorkByName : String ==> Work
+			getWorkByName(l) ==
+			(
+				dcl t : Work := new Work();
+				for all work in set pastWorks do
+					if l = work.getCompany().getName()
+						then return work;
+				return t
+			);
+			
 		-- Returns the status of the Person. --
 		public getStatus : () ==> Status
 			getStatus() == (return status);
@@ -75,9 +87,33 @@ class Person
 		public getSkills : () ==> set of Skill
 			getSkills() == (return skills);
 			
+		-- Returns a skill based on its name, from the set of skills of the Person. --
+		public getSkillByName : String ==> Skill
+			getSkillByName(l) ==
+			(
+				dcl t : Skill := new Skill();
+				for all skill in set skills do
+					if l = skill.getName()
+						then return skill;
+				return t
+			);
+			
 		-- Returns all of the Person's schools he frequented. --
 		public getEducation : () ==> set of Education
 			getEducation() == (return education);
+			
+		-- Returns an education based on its name, from the set of educations of the Person. --
+		public getEducationByName : String ==> Education
+			getEducationByName(l) ==
+			(
+				dcl t : Education := new Education();
+				for all e in set education do
+				(
+					if l = e.getCompany().getName()
+						then return e
+				);
+				return t
+			);
 			
 		-- Returns a description of the Person. --
 		public getDescription : () ==> String
@@ -87,9 +123,31 @@ class Person
 		public getLanguages : () ==> set of Language
 			getLanguages() == (return languages);
 			
+		-- Returns a language based on its name, from the set of languages of the Person. --
+		public getLanguageByName : String ==> Language
+			getLanguageByName(l) ==
+			(
+				dcl t : Language := new Language();
+				for all language in set languages do
+					if l = language.getName()
+						then return language;
+				return t
+			);
+			
 		-- Returns all of the Person's interests. --
 		public getInterests : () ==> set of Interest
 			getInterests() == (return interests);
+		
+		-- Returns an interest based on its name, from the set of interests of the Person. --
+		public getInterestByName : String ==> Interest
+			getInterestByName(i) ==
+			(
+				dcl t : Interest := new Interest();
+				for all interest in set interests do
+					(if i = interest.getName()
+						then return interest);
+				return t
+			);
 			
 		-- Returns the Person's CV. --
 		public getCV : () ==> String
@@ -436,6 +494,16 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  		temp := temp union {p2};
 	  		assertEqual(pI.getConnections(), temp)
 	  	);
+	  	
+	  private testGets: () ==> ()
+	  	testGets() ==
+	  	(
+	  		assertEqual(pI.getSkillByName("JAVA"),s1);
+	  		assertEqual(pI.getLanguageByName("English"),l2);
+	  		assertEqual(pI.getInterestByName("GTA IV"), i3);
+	  		assertEqual(pI.getEducationByName("Autoridade Tributaria e Aduaneira"),eI);
+	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI)
+	  	);
 	  -- END GETS --
 	  
 	  -- START SETS --
@@ -620,6 +688,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      teste.testAddLanguage();
 	      teste.testAddInterest();
 	      teste.testAddConnection();
+	      teste.testGets();
 	      teste.testGetBirthDate();
 	      teste.testGetGender();
 	      teste.testGetAddress();
