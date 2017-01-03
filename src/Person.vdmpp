@@ -6,8 +6,11 @@ class Person
 		public Status = <Unemployed> | <Student> | <Employed> | <Undefined>;
 		
 	instance variables
-	
+		
+		-- The name of the Person. --
 		private name : String;
+		
+		-- The current Work of the Person. --
 		private currentWork : [Work];
 		
 		-- A set of all the previous works of the Person. --
@@ -41,7 +44,7 @@ class Person
 		
 		-- Returns the name of the Person. --
 		public getName : () ==> String
-			getName() == (return name);	
+			getName() == (return name);
 			
 		-- Returns the current work of the person. --
 		public getCurrentWork : () ==> Work
@@ -52,14 +55,13 @@ class Person
 			getPastWorks() == (return pastWorks);
 			
 		-- Returns a work based on its name, from the set of pastWorks of the Person. --
-		public getWorkByName : String ==> Work
+		public getWorkByName : String ==> [Work]
 			getWorkByName(l) ==
 			(
-				dcl t : Work := new Work();
 				for all work in set pastWorks do
 					if l = work.getCompany().getName()
 						then return work;
-				return t
+				return nil
 			);
 			
 		-- Returns the status of the Person. --
@@ -71,14 +73,13 @@ class Person
 			getSkills() == (return skills);
 			
 		-- Returns a skill based on its name, from the set of skills of the Person. --
-		public getSkillByName : String ==> Skill
+		public getSkillByName : String ==> [Skill]
 			getSkillByName(l) ==
 			(
-				dcl t : Skill := new Skill();
 				for all skill in set skills do
 					if l = skill.getName()
 						then return skill;
-				return t
+				return nil
 			);
 			
 		-- Returns all of the Person's schools he frequented. --
@@ -86,16 +87,15 @@ class Person
 			getEducation() == (return education);
 			
 		-- Returns an education based on its name, from the set of educations of the Person. --
-		public getEducationByName : String ==> Education
+		public getEducationByName : String ==> [Education]
 			getEducationByName(l) ==
 			(
-				dcl t : Education := new Education();
 				for all e in set education do
 				(
 					if l = e.getCompany().getName()
 						then return e
 				);
-				return t
+				return nil
 			);
 			
 		-- Returns a description of the Person. --
@@ -107,14 +107,13 @@ class Person
 			getLanguages() == (return languages);
 			
 		-- Returns a language based on its name, from the set of languages of the Person. --
-		public getLanguageByName : String ==> Language
+		public getLanguageByName : String ==> [Language]
 			getLanguageByName(l) ==
 			(
-				dcl t : Language := new Language();
 				for all language in set languages do
 					if l = language.getName()
 						then return language;
-				return t
+				return nil
 			);
 			
 		-- Returns all of the Person's interests. --
@@ -122,14 +121,14 @@ class Person
 			getInterests() == (return interests);
 		
 		-- Returns an interest based on its name, from the set of interests of the Person. --
-		public getInterestByName : String ==> Interest
+		public getInterestByName : String ==> [Interest]
 			getInterestByName(i) ==
 			(
 				dcl t : Interest := new Interest();
 				for all interest in set interests do
 					(if i = interest.getName()
 						then return interest);
-				return t
+				return nil
 			);
 			
 		-- Returns the Person's CV. --
@@ -151,7 +150,7 @@ class Person
 				if (status = <Employed> and s = <Unemployed>)
 				then
 				(
-					dcl data : Date := new Date(2016,12,30); -- ATÉ AO PEITO
+					dcl data : Date := new Date(2017,12,30); -- ATÉ AO PEITO
 					currentWork.setEndDate(data);
 					pastWorks:= pastWorks union {currentWork};
 					currentWork := nil
@@ -180,14 +179,14 @@ class Person
 		public addPastWorks : Work ==> ()
 			addPastWorks(w) == (pastWorks := pastWorks union {w}; return)
 			pre w not in set pastWorks
-			post card pastWorks = card pastWorks~ + 1;
+			post pastWorks = pastWorks~ union {w};
 		
 		-- Adds a skill to the existent set. --
 		-- It checks if the skill is not in the set and if it was indeed added. --
 		public addSkill : Skill ==> ()
 			addSkill(s) == (skills := skills union {s}; return)
 			pre s not in set skills
-			post card skills = card skills~ + 1;
+			post  skills = skills~ union {s};
 		
 		
 		-- Adds a education to the existent set. --
@@ -195,7 +194,7 @@ class Person
 		public addEducation : Education ==> ()
 			addEducation(e) == (education := education union {e}; return)
 			pre e not in set education
-			post card education = card education~ + 1;
+			post education = education~ union {e};
 		
 		
 		-- Adds a language to the existent set. --
@@ -203,21 +202,21 @@ class Person
 		public addLanguage : Language ==> ()
 			addLanguage(l) == (languages := languages union {l}; return)
 			pre l not in set languages
-			post card languages = card languages~ + 1;
+			post languages = languages~ union {l};
 			
 		-- Adds an interest to the existent set. --
 		-- It checks if the interest is not in the set and if it was indeed added. --
 		public addInterest : Interest ==> ()
 			addInterest(i) == (interests := interests union {i}; return)
 			pre i not in set interests
-			post card interests = card interests~ + 1;
+			post interests = interests~ union {i};
 		
 		-- Adds a connection to the existent set. --
 		-- It checks if the connection is not in the set and if it was indeed added. --
 		public addConnection : Person ==> ()
 			addConnection(c) == (connections := connections union {c}; return)
-			pre c not in set connections
-			post card connections = card connections~ + 1;
+			pre c not in set connections and c <> self
+			post connections = connections~ union {c};
 		--END ADDS--
 		
 		--START REMOVES--
@@ -227,42 +226,42 @@ class Person
 		public removePastWork : Work ==> ()
 			removePastWork(w) == (pastWorks := pastWorks \ {w}; return)
 			pre w in set pastWorks
-			post card pastWorks = card pastWorks~ - 1;
+			post {} = pastWorks inter {w};
 		
 		-- Removes a skill from the existent set. --
 		-- It checks if the skill is in the set and if it was indeed removed. --
 		public removeSkill : Skill ==> ()
 			removeSkill(s) == (skills := skills \ {s}; return)
 			pre s in set skills
-			post card skills = card skills~ - 1;
+			post {} = skills inter {s};
 		
 		-- Removes a education from the existent set. --
 		-- It checks if the education is in the set and if it was indeed removed. --	
 		public removeEducation : Education ==> ()
 			removeEducation(e) == (education := education \ {e}; return)
 			pre e in set education
-			post card education = card education~ - 1;
+			post {} = education inter {e};
 		
 		-- Removes a language from the existent set. --
 		-- It checks if the language is in the set and if it was indeed removed. --
 		public removeLanguage : Language ==> ()
 			removeLanguage(l) == (languages := languages \ {l}; return)
 			pre l in set languages
-			post card languages = card languages~ - 1;
+			post {} = languages inter {l};
 		
 		-- Removes an interest from the existent set. --
 		-- It checks if the interest is in the set and if it was indeed removed. --	
 		public removeInterest : Interest ==> ()
 			removeInterest(i) == (interests := interests \ {i}; return)
 			pre i in set interests
-			post card interests = card interests~ - 1;
+			post {} = interests inter {};
 		
 		-- Removes a connection from the existent set. --
 		-- It checks if the connection is in the set and if it was indeed removed. --
 		public removeConnection : Person ==> ()
 			removeConnection(c) == (connections := connections \ {c}; return)
-			pre c in set connections
-			post card connections = card connections~ - 1;
+			pre c in set connections and c <> self
+			post {} = connections inter {};
 		--END REMOVES
 		
 		-- Returns all of the common contacts between two persons. --
@@ -270,7 +269,8 @@ class Person
 			commonContacts(p) ==
 			(
 				return p.getConnections() inter connections
-			);
+			)
+			pre p <> self;
 		
 		-- Returns the distance from one Person to the other. --
 		public distance : Person ==> nat
@@ -298,7 +298,8 @@ class Person
 					distancia := distancia + 1
 				);
 				return distancia;
-			);
+			)
+			pre p <> self;
 end Person
 
 class PersonTest is subclass of TestCaseLinkedIn

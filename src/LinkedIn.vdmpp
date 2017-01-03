@@ -2,27 +2,36 @@ class LinkedIn
 	types
 		public String = seq of char;
 	instance variables
+	
+		-- All the people in LinkedIn. --
 		private persons: set of Person:= {};
+		
+		-- All the companies in LinkedIn. --
 		private companies: set of Company:= {};
 		
 	operations
-	
+		
+		-- Get all the people in LinkedIn. --
 		public getPersons : () ==> set of Person
 			getPersons() == (return persons);
 			
+		-- Get all the companies in LinkedIn. --
 		public getCompanies : () ==> set of Company
 			getCompanies() == (return companies);
 	
+		-- Add a person to LinkedIn. --
 		public addPerson: Person ==> () 
 			addPerson(p) == persons :=  {p} union persons
 			pre p not in set persons
 			post persons =  {p} union persons~;
 			
+		-- Add a company to LinkedIn. --
 		public addCompany: Company ==> () 
 			addCompany(c) == companies :=  {c} union companies
 			pre c not in set companies
 			post companies =  {c} union companies~;
 		
+		-- Returns the person with the most connections in LinkedIn. --
 		public mostConnections: () ==> Person
 			mostConnections() == 
 			(
@@ -30,9 +39,10 @@ class LinkedIn
 				for all p in set persons do
 				if card p.getConnections() > card person.getConnections()
 					then person := p;
-				return person			
+				return person	
 			);
 		
+		-- Returns the medium distance between all the people in LinkedIn. --
 		public mediumDistance: () ==> nat
 			mediumDistance() ==
 			(
@@ -48,7 +58,8 @@ class LinkedIn
 				);
 				return num / den;
 			);
-			
+		
+		-- Receives a string and returns the Person with the name or description equal to the string. --
 		public searchPerson: String ==> set of Person
 			searchPerson(s)==
 			(
