@@ -276,31 +276,28 @@ class Person
 			pre p <> self;
 		
 		-- Returns the distance from one Person to the other. --
-		public distance : Person ==> nat
+		public distance : Person ==> int
 			distance(p) ==
 			(
-				dcl retorno : set of Person;
 				dcl distancia : int := 0;
-				dcl boolean : bool := true;
 				dcl temp : set of Person := connections;
-				while boolean do
+				dcl visited : set of Person := {};
+				
+				while p not in set visited do
 				(
-					for all c in set temp do
+					distancia := distancia + 1;
+					
+					for all t in set temp do
 					(
-						if (c not in set retorno)
-						then
-						(
-							retorno := retorno union {c};
-							if (c = p)
-							then
-							(
-								return distancia;
-							);
-						);
+						visited := visited union {t};
+						temp := temp union t.getConnections() \ visited
 					);
-					distancia := distancia + 1
+					if (card temp = 0)
+						then return -1;
+						
+					return distancia
 				);
-				return distancia;
+				
 			)
 			pre p <> self;
 end Person
