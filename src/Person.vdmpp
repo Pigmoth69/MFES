@@ -11,7 +11,7 @@ class Person
 		private name : String;
 		
 		-- The current Work of the Person. --
-		private currentWork : [Work];
+		private currentWork : [Work] := nil;
 		
 		-- A set of all the previous works of the Person. --
 		private pastWorks : set of Work := {};
@@ -34,6 +34,7 @@ class Person
 		-- The connections of a Person, as in, all of the other Persons he "follows". --
 		private connections : set of Person := {};
 		
+		inv {currentWork} inter pastWorks = {} or {currentWork} = {nil} or pastWorks = {}
 	operations
 	
 		-- Creates a new Person given its name. --
@@ -151,9 +152,10 @@ class Person
 				then
 				(
 					dcl data : Date := new Date(2017,12,30); -- ATÉ AO PEITO
-					currentWork.setEndDate(data);
-					pastWorks:= pastWorks union {currentWork};
-					currentWork := nil
+					dcl temp : Work := currentWork;
+					currentWork := nil;
+					temp.setEndDate(data);
+					pastWorks:= pastWorks union {temp}
 				);
 				
 				status := s;
@@ -169,7 +171,8 @@ class Person
 			setCV(c) == (cv := c; return);
 			
 		public setCurrentWork : Work ==> ()
-			setCurrentWork(w) == (currentWork := w; return);
+			setCurrentWork(w) == (currentWork := w; status := <Employed>; return)
+			pre status <> <Employed> and w not in set pastWorks;
 		--END SETS--
 		
 		--START ADDS--
@@ -178,7 +181,7 @@ class Person
 		-- It checks if the work is not in the set and if it was indeed added. --
 		public addPastWorks : Work ==> ()
 			addPastWorks(w) == (pastWorks := pastWorks union {w}; return)
-			pre w not in set pastWorks
+			pre w not in set pastWorks and w <> currentWork
 			post pastWorks = pastWorks~ union {w};
 		
 		-- Adds a skill to the existent set. --
