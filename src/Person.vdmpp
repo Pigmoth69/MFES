@@ -34,7 +34,7 @@ class Person
 		-- The connections of a Person, as in, all of the other Persons he "follows". --
 		private connections : set of Person := {};
 		
-		inv {currentWork} inter pastWorks = {} or {currentWork} = {nil} or pastWorks = {}
+		inv {currentWork} inter pastWorks = {}
 	operations
 	
 		-- Creates a new Person given its name. --
@@ -257,14 +257,14 @@ class Person
 		public removeInterest : Interest ==> ()
 			removeInterest(i) == (interests := interests \ {i}; return)
 			pre i in set interests
-			post {} = interests inter {};
+			post {} = interests inter {i};
 		
 		-- Removes a connection from the existent set. --
 		-- It checks if the connection is in the set and if it was indeed removed. --
 		public removeConnection : Person ==> ()
 			removeConnection(c) == (connections := connections \ {c}; return)
 			pre c in set connections and c <> self
-			post {} = connections inter {};
+			post {} = connections inter {c};
 		--END REMOVES
 		
 		-- Returns all of the common contacts between two persons. --
