@@ -276,31 +276,26 @@ class Person
 			pre p <> self;
 		
 		-- Returns the distance from one Person to the other. --
-		public distance : Person ==> nat
+		public distance : Person ==> int
 			distance(p) ==
 			(
-				dcl retorno : set of Person;
-				dcl distancia : int := 0;
-				dcl boolean : bool := true;
+				dcl distancia : int := 1;
 				dcl temp : set of Person := connections;
-				while boolean do
+				dcl visited : set of Person := {};
+				
+				while p not in set temp do
 				(
-					for all c in set temp do
+					distancia := distancia + 1;
+					
+					for all t in set temp do
 					(
-						if (c not in set retorno)
-						then
-						(
-							retorno := retorno union {c};
-							if (c = p)
-							then
-							(
-								return distancia;
-							);
-						);
+						visited := visited union {t};
+						temp := temp union t.getConnections() \ visited
 					);
-					distancia := distancia + 1
+					if (card temp = 0)
+						then return -1;
 				);
-				return distancia;
+				return distancia
 			)
 			pre p <> self;
 end Person
@@ -455,10 +450,15 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  	testGets() ==
 	  	(
 	  		assertEqual(pI.getSkillByName("JAVA"),s1);
+	  		assertEqual(pI.getSkillByName("LOLOL"),nil);
 	  		assertEqual(pI.getLanguageByName("English"),l2);
+	  		assertEqual(pI.getLanguageByName("LOLOL"),nil);
 	  		assertEqual(pI.getInterestByName("GTA IV"), i3);
+	  		assertEqual(pI.getInterestByName("LOLOL"), nil);
 	  		assertEqual(pI.getEducationByName("Autoridade Tributaria e Aduaneira"),eI);
-	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI)
+	  		assertEqual(pI.getEducationByName("LOLOL"),nil);
+	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI);
+	  		assertEqual(pI.getWorkByName("LOLOL"),nil)
 	  	);
 	  -- END GETS --
 	  
@@ -604,7 +604,14 @@ class PersonTest is subclass of TestCaseLinkedIn
 			testCommonContacts() ==
 			(
 				assertEqual(p1.commonContacts(p4), {p6})
-			); 
+			);
+			
+		private testDistance : () ==> ()
+			testDistance() ==
+			(
+				assertEqual(p1.distance(p2), -1);
+				assertEqual(pI.distance(p6), 2)
+			);
 	    
     public static main: () ==> ()
 	    main() ==
@@ -639,6 +646,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      teste.testRemoveSkill();
 	      teste.testRemoveEducation();
 	      teste.testRemoveLanguage();
-	      teste.testRemoveInterest()
+	      teste.testRemoveInterest();
+	      teste.testDistance()
 	    );
 end PersonTest
