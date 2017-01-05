@@ -279,11 +279,11 @@ class Person
 		public distance : Person ==> int
 			distance(p) ==
 			(
-				dcl distancia : int := 0;
+				dcl distancia : int := 1;
 				dcl temp : set of Person := connections;
 				dcl visited : set of Person := {};
 				
-				while p not in set visited do
+				while p not in set temp do
 				(
 					distancia := distancia + 1;
 					
@@ -294,10 +294,8 @@ class Person
 					);
 					if (card temp = 0)
 						then return -1;
-						
-					return distancia
 				);
-				
+				return distancia
 			)
 			pre p <> self;
 end Person
@@ -452,10 +450,15 @@ class PersonTest is subclass of TestCaseLinkedIn
 	  	testGets() ==
 	  	(
 	  		assertEqual(pI.getSkillByName("JAVA"),s1);
+	  		assertEqual(pI.getSkillByName("LOLOL"),nil);
 	  		assertEqual(pI.getLanguageByName("English"),l2);
+	  		assertEqual(pI.getLanguageByName("LOLOL"),nil);
 	  		assertEqual(pI.getInterestByName("GTA IV"), i3);
+	  		assertEqual(pI.getInterestByName("LOLOL"), nil);
 	  		assertEqual(pI.getEducationByName("Autoridade Tributaria e Aduaneira"),eI);
-	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI)
+	  		assertEqual(pI.getEducationByName("LOLOL"),nil);
+	  		assertEqual(pI.getWorkByName("Autoridade Tributaria e Aduaneira"),wI);
+	  		assertEqual(pI.getWorkByName("LOLOL"),nil)
 	  	);
 	  -- END GETS --
 	  
@@ -601,7 +604,14 @@ class PersonTest is subclass of TestCaseLinkedIn
 			testCommonContacts() ==
 			(
 				assertEqual(p1.commonContacts(p4), {p6})
-			); 
+			);
+			
+		private testDistance : () ==> ()
+			testDistance() ==
+			(
+				assertEqual(p1.distance(p2), -1);
+				assertEqual(pI.distance(p6), 2)
+			);
 	    
     public static main: () ==> ()
 	    main() ==
@@ -636,6 +646,7 @@ class PersonTest is subclass of TestCaseLinkedIn
 	      teste.testRemoveSkill();
 	      teste.testRemoveEducation();
 	      teste.testRemoveLanguage();
-	      teste.testRemoveInterest()
+	      teste.testRemoveInterest();
+	      teste.testDistance()
 	    );
 end PersonTest

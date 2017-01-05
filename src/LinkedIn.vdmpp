@@ -48,10 +48,10 @@ class LinkedIn
 			);
 		
 		-- Returns the medium distance between all the people in LinkedIn. --
-		public mediumDistance: () ==> nat
+		public mediumDistance: () ==> int
 			mediumDistance() ==
 			(
-				dcl num : nat := 0;
+				dcl num : int := 0;
 				dcl b : bool := false;
 				dcl den : nat := 0;
 				for all p in set persons do
@@ -162,6 +162,12 @@ class LinkedInTest is subclass of TestCaseLinkedIn
 	  	(
 	  		assertEqual(l.mostConnections(), p1)
 	  	);
+	  
+	  private testMediumDistance : () ==> ()
+	  	testMediumDistance() ==
+	  	(
+	  		assertEqual(l.mediumDistance(), -1)
+	  	);
 	  	
 	  private testSearchPerson: () ==> ()
 	  	testSearchPerson() ==
@@ -169,6 +175,13 @@ class LinkedInTest is subclass of TestCaseLinkedIn
 	  		p1.setDescription("Preciso de comprar o GTA V");
 	  		assertEqual(l.searchPerson("Luis Figueiredo"), {p1});
 	  		assertEqual(l.searchPerson("Preciso de comprar o GTA V"), {p1})
+	  	);
+	  	
+	  private testNoPeople: () ==> ()
+	  	testNoPeople() ==
+	  	(
+	  		assertEqual(l.mostConnections(), nil);
+	  		assertEqual(l.mediumDistance(), -1)
 	  	);
 	  
 	  private testPopulateConnections: () ==> ()
@@ -187,6 +200,7 @@ class LinkedInTest is subclass of TestCaseLinkedIn
 	    (
 	    	dcl teste : LinkedInTest := new LinkedInTest();
 	      
+	      teste.testNoPeople();
 	    	teste.testPopulateConnections();
 	    	
         teste.testAddCompany();
@@ -195,7 +209,8 @@ class LinkedInTest is subclass of TestCaseLinkedIn
 	      teste.testGetPersons();
 	      teste.testSearchPerson();
 	      
-	      teste.testMostConnections()
+	      teste.testMostConnections();
+	      teste.testMediumDistance()
 	    );
 
 end LinkedInTest
